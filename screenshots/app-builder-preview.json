@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "LightNov",
+      "hasCanvas": false,
+      "bodyTextLen": 673,
+      "bodyTextHash": "cee3c95aa0d3359e1fed56e77146fa480a8f7001f8654c6ec9d12abcc9a63232",
+      "bodyTextPrefix": "LightNov A book, with plates Discover Write Install Under constr",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "LightNov",
+      "hasCanvas": false,
+      "bodyTextLen": 673,
+      "bodyTextHash": "cee3c95aa0d3359e1fed56e77146fa480a8f7001f8654c6ec9d12abcc9a63232",
+      "bodyTextPrefix": "LightNov A book, with plates Discover Write Install Under constr",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

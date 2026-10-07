@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="LightNov">
+  <rect width="32" height="32" rx="7" fill="#1e3a5f"/>
+  <rect x="3.2" y="7.2" width="11.6" height="17.6" rx="1" fill="#f3eee4"/>
+  <rect x="17.2" y="7.2" width="11.6" height="17.6" rx="1" fill="#e6dece"/>
+  <rect x="14.4" y="7.2" width="3.2" height="17.6" fill="#1c1915"/>
+  <path fill="#c4452d" d="M12.2 3.6h7.6V24l-3.8-3.6L12.2 24V3.6z"/>
+</svg>

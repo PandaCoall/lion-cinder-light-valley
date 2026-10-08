@@ -1,4 +1,4 @@
-import { readdirSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { join } from "node:path";
 import type { Plugin } from "vite";
 import { defineConfig } from "vite";
@@ -159,7 +159,18 @@ export default defineConfig(({ command, isPreview }) => ({
     port: 8081,
     strictPort: true,
   },
-  resolve: { tsconfigPaths: true },
+  resolve: {
+    tsconfigPaths: true,
+    alias: {
+      "kokoro-web": fileURLToPath(new URL("./node_modules/kokoro-js/dist/kokoro.web.js", import.meta.url)),
+    },
+  },
+  optimizeDeps: {
+    exclude: ["kokoro-js", "@huggingface/transformers"],
+  },
+  ssr: {
+    external: ["kokoro-js", "@huggingface/transformers", "onnxruntime-web"],
+  },
   plugins: [
     pgliteBootstrapPlugin(),
     // Before tanstackStart so /auth/popup never falls through to the SPA.
@@ -179,7 +190,7 @@ export default defineConfig(({ command, isPreview }) => ({
             // false, so removing this silently unwires /?install=1 on deploys.
             serverDir: "./server",
             rollupConfig: {
-              external: [/^@electric-sql\/pglite/],
+              external: [/^@electric-sql\/pglite/, "kokoro-js", "@huggingface/transformers", "onnxruntime-web"],
             },
           }),
         ]

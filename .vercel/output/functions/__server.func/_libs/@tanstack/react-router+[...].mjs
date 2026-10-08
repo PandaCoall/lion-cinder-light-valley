@@ -426,10 +426,6 @@ function redirect(opts) {
 function isRedirect(obj) {
 	return obj instanceof Response && !!obj.options;
 }
-/** Parse a serialized redirect object back into a redirect Response. */
-function parseRedirect(obj) {
-	if (obj !== null && typeof obj === "object" && obj.isSerializedRedirect) return redirect(obj);
-}
 //#endregion
 //#region node_modules/@tanstack/router-core/dist/esm/ssr/ssr-match-id.js
 function dehydrateSsrMatchId(id) {
@@ -17875,4 +17871,4 @@ var renderRouterToStream = async ({ request, router, responseHeaders, children }
 	}
 };
 //#endregion
-export { toCrossJSONStream as A, invariant as B, require_jsx_runtime as C, fromJSON as D, crossSerializeStream as E, resolveManifestAssetLink as F, dehydrateSsrMatchId as G, decodePath as H, resolveManifestCssLink as I, rootRouteId as J, isRedirect as K, waitForReason as L, createInlineCssStyleAsset as M, getScriptPreloadAttrs as N, isStream as O, getStylesheetHref as P, _getRenderedMatches as R, useRouter as S, createStream as T, isDangerousProtocol as U, createSieveCache as V, isPromise as W, require_react as X, isNotFound as Y, lazyRouteComponent as _, isSsrResponse as a, Link as b, stripSsrResponseBody as c, Scripts as d, HeadContent as f, Outlet as g, createRouter as h, disposeSsrResponse as i, createInlineCssPlaceholderAsset as j, toCrossJSONAsync as k, createHydrationScripts as l, RouterProvider as m, bindSsrResponseToRequest as n, normalizeSsrResponse as o, useRouterState as p, parseRedirect as q, defineHandlerCallback as r, replaceSsrResponse as s, renderRouterToStream as t, GLOBAL_TSR as u, createFileRoute as v, createPlugin as w, useNavigate as x, createRootRoute as y, executeRewriteInput as z };
+export { toCrossJSONStream as A, invariant as B, require_jsx_runtime as C, fromJSON as D, crossSerializeStream as E, resolveManifestAssetLink as F, dehydrateSsrMatchId as G, decodePath as H, resolveManifestCssLink as I, isNotFound as J, isRedirect as K, waitForReason as L, createInlineCssStyleAsset as M, getScriptPreloadAttrs as N, isStream as O, getStylesheetHref as P, _getRenderedMatches as R, useRouter as S, createStream as T, isDangerousProtocol as U, createSieveCache as V, isPromise as W, require_react as Y, lazyRouteComponent as _, isSsrResponse as a, Link as b, stripSsrResponseBody as c, Scripts as d, HeadContent as f, Outlet as g, createRouter as h, disposeSsrResponse as i, createInlineCssPlaceholderAsset as j, toCrossJSONAsync as k, createHydrationScripts as l, RouterProvider as m, bindSsrResponseToRequest as n, normalizeSsrResponse as o, useRouterState as p, rootRouteId as q, defineHandlerCallback as r, replaceSsrResponse as s, renderRouterToStream as t, GLOBAL_TSR as u, createFileRoute as v, createPlugin as w, useNavigate as x, createRootRoute as y, executeRewriteInput as z };

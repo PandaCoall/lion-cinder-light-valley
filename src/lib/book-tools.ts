@@ -1,4 +1,5 @@
-import { narrate } from "@/lib/narrate";
+import { performChapter } from "@/lib/performance";
+import { playBeats, primeVoice, stopVoice } from "@/lib/voice-engine";
 import { blocks, book, type Block } from "@/data/volume";
 
 const PLATES = ["/plates/cover.jpg", "/plates/portrait.jpg", "/plates/keeper.jpg", "/plates/street.jpg"];
@@ -47,8 +48,6 @@ export function pageText(pageBlocks: Block[]): string {
 }
 
 let voiceToken = 0;
-let voiceAudio: HTMLAudioElement | null = null;
-let voiceUrl: string | null = null;
 
 function pageSpeech(pageBlocks: Block[]): string {
   const chunks: string[] = [];
@@ -62,37 +61,31 @@ function pageSpeech(pageBlocks: Block[]): string {
 }
 
 export function setSpeechRate(rate: number) {
-  if (voiceAudio) voiceAudio.playbackRate = rate;
+  void rate;
 }
 
-export async function speakBlocks(pageBlocks: Block[], rate = 1): Promise<boolean> {
+export async function speakBlocks(
+  pageBlocks: Block[],
+  rate = 1,
+  onNote?: (note: string) => void,
+): Promise<boolean> {
   stopSpeech();
   const mine = voiceToken;
+  primeVoice();
   const text = pageSpeech(pageBlocks);
   if (!text.trim()) return false;
-  const result = await narrate({ data: { text } });
-  if (mine !== voiceToken) return false;
-  if (!result.ok) return false;
-  const binary = atob(result.audio);
-  const bytes = new Uint8Array(binary.length);
-  for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
-  voiceUrl = URL.createObjectURL(new Blob([bytes], { type: "audio/mpeg" }));
-  voiceAudio = new Audio(voiceUrl);
-  voiceAudio.playbackRate = rate;
-  await voiceAudio.play();
-  return true;
+  const beats = performChapter(text, 4);
+  if (!beats.length) return false;
+  try {
+    return await playBeats(beats, rate, onNote, () => mine === voiceToken);
+  } catch {
+    return false;
+  }
 }
 
 export function stopSpeech() {
   voiceToken += 1;
-  if (voiceAudio) {
-    voiceAudio.pause();
-    voiceAudio = null;
-  }
-  if (voiceUrl) {
-    URL.revokeObjectURL(voiceUrl);
-    voiceUrl = null;
-  }
+  stopVoice();
 }
 
 export async function shareCard(text: string) {

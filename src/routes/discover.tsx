@@ -35,6 +35,7 @@ function Discover() {
   const [dy, setDy] = useState(0);
   const [undo, setUndo] = useState<{ kind: "skip" | "save"; id: string } | null>(null);
   const [hearing, setHearing] = useState(false);
+  const [voiceNote, setVoiceNote] = useState("");
   const drag = useRef({ x: 0, y: 0, dx: 0, dy: 0, on: false });
 
   const cards = useMemo(() => filterStories(query, want, avoid, genre), [query, want, avoid, genre]);
@@ -75,12 +76,15 @@ function Discover() {
     if (hearing) {
       stopSpeech();
       setHearing(false);
+      setVoiceNote("");
       return;
     }
     setHearing(true);
+    setVoiceNote("Casting the chapter");
     const text = sampleSpeech(story.id, false);
-    void speakBlocks([{ kind: "p", text }]).then((played) => {
-      setHearing((current) => (current && played ? false : current));
+    void speakBlocks([{ kind: "p", text }], 1, setVoiceNote).then((played) => {
+      setHearing(false);
+      setVoiceNote(played ? "" : "Voice did not start. Tap Listen again.");
     });
   };
 
@@ -176,6 +180,7 @@ function Discover() {
                   Save
                 </button>
               </div>
+              {voiceNote ? <p className="mt-2 font-sans text-xs text-[#FFE62D]">{voiceNote}</p> : null}
             </div>
           </article>
         ) : (

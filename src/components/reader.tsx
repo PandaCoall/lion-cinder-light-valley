@@ -60,6 +60,7 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
   const [exporting, setExporting] = useState(false);
   const [markFlash, setMarkFlash] = useState(false);
   const [hearing, setHearing] = useState(false);
+  const [voiceNote, setVoiceNote] = useState("");
   const navigate = useNavigate();
 
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -378,11 +379,16 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
             if (hearing) {
               stopSpeech();
               setHearing(false);
+              setVoiceNote("");
               return;
             }
             bumpListens();
             setHearing(true);
-            void speakBlocks(mode === "scroll" ? blocks : pageBlocks, rate).finally(() => setHearing(false));
+            setVoiceNote("Casting this page");
+            void speakBlocks(mode === "scroll" ? blocks : pageBlocks, rate, setVoiceNote).finally(() => {
+              setHearing(false);
+              setVoiceNote("");
+            });
           }}
           className="inline-flex size-11 items-center justify-center rounded-full text-ink"
         >
@@ -397,6 +403,7 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
           <Settings className="size-5" />
         </button>
       </header>
+      {voiceNote ? <p className="absolute inset-x-0 top-14 z-30 px-4 text-center font-sans text-xs text-[#12B8FF]">{voiceNote}</p> : null}
 
       <main className={chrome ? "flex h-full items-stretch justify-center px-3 pt-16 pb-20 sm:px-8" : "fixed inset-0 z-10"}>
         <article className={`sheet relative flex h-full w-full flex-col overflow-hidden bg-paper ${chrome ? "" : "max-w-none"}`}>
@@ -745,7 +752,7 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
                   </div>
                 </fieldset>
                 <div className="grid gap-2">
-                  <button type="button" className="h-12 rounded-full border border-line font-sans text-sm" onClick={() => { bumpListens(); setHearing(true); void speakBlocks(mode === "scroll" ? blocks : pageBlocks, rate).finally(() => setHearing(false)); }}>
+                  <button type="button" className="h-12 rounded-full border border-line font-sans text-sm" onClick={() => { bumpListens(); setHearing(true); setVoiceNote("Casting this page"); void speakBlocks(mode === "scroll" ? blocks : pageBlocks, rate, setVoiceNote).finally(() => { setHearing(false); setVoiceNote(""); }); }}>
                     {hearing ? "Reading" : "Listen"}
                   </button>
                   <div className="flex gap-2">

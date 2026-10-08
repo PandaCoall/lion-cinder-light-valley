@@ -1,5 +1,5 @@
 import { i as getServerFnById, n as createServerFn, r as TSS_SERVER_FUNCTION } from "./ssr.mjs";
-import { b as blocks, x as book } from "./router-DhyAnJ2q.mjs";
+import { b as blocks, x as book } from "./router-BykmevjF.mjs";
 //#region node_modules/.nitro/vite/services/ssr/assets/book-tools-MYxdNRSU.js
 var createSsrRpc = (functionId) => {
 	const url = "/_serverFn/" + functionId;

@@ -1,9 +1,9 @@
 import { C as require_jsx_runtime, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { C as chapters, o as Route$1, p as findStory } from "./router-DV7vINS4.mjs";
+import { C as chapters, o as Route$1, p as findStory } from "./router-CrBvZU6N.mjs";
 import { t as AppNav } from "./nav-CzuovPGK.mjs";
 import { t as useReader } from "./reader-store-CB2CzwHY.mjs";
-import { n as useOpenBook } from "./open-book-CwJS6qwV.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/book._bookId-CskVd3Yz.js
+import { n as useOpenBook } from "./open-book-ByoYCZ78.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/book._bookId-6xruJD6G.js
 var import_jsx_runtime = require_jsx_runtime();
 function BookPreview() {
 	const { bookId } = Route$1.useParams();

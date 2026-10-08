@@ -1,9 +1,9 @@
 import { C as require_jsx_runtime, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { p as findStory, v as stories } from "./router-DV7vINS4.mjs";
+import { p as findStory, v as stories } from "./router-CrBvZU6N.mjs";
 import { t as AppNav } from "./nav-CzuovPGK.mjs";
 import { t as useReader } from "./reader-store-CB2CzwHY.mjs";
-import { n as useOpenBook } from "./open-book-CwJS6qwV.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/shelf-DMfwh7ED.js
+import { n as useOpenBook } from "./open-book-ByoYCZ78.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/shelf-BXUtvxdA.js
 var import_jsx_runtime = require_jsx_runtime();
 function ShelfPage() {
 	const theme = useReader((state) => state.theme);

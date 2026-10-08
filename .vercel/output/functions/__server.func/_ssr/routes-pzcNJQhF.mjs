@@ -1,9 +1,9 @@
 import { C as require_jsx_runtime, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { v as stories, x as book } from "./router-DV7vINS4.mjs";
+import { v as stories, x as book } from "./router-CrBvZU6N.mjs";
 import { t as AppNav } from "./nav-CzuovPGK.mjs";
 import { t as useReader } from "./reader-store-CB2CzwHY.mjs";
-import { n as useOpenBook } from "./open-book-CwJS6qwV.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-Bdp7suAs.js
+import { n as useOpenBook } from "./open-book-ByoYCZ78.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-pzcNJQhF.js
 var import_jsx_runtime = require_jsx_runtime();
 function Home() {
 	const theme = useReader((state) => state.theme);

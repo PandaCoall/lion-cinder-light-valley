@@ -151,21 +151,14 @@ export function stripInstallParams(url) {
   return rest ? `${path}?${rest}` : path;
 }
 
-/** Name shown when the app is installed. A site title wins over the host slug. */
-export function installedAppName(hostHeader, site = {}) {
-  const fromSite = String(site.title ?? "").trim();
-  if (fromSite) return fromSite;
-  return appNameFromHost(hostHeader);
-}
-
-export function renderInstallPageHtml(template, { host, url, site } = {}) {
+export function renderInstallPageHtml(template, { host, url } = {}) {
   return String(template)
-    .replaceAll("{{APP_NAME}}", escapeHtml(installedAppName(host, site)))
+    .replaceAll("{{APP_NAME}}", escapeHtml(appNameFromHost(host)))
     .replaceAll("{{APP_URL}}", escapeHtml(stripInstallParams(url)));
 }
 
-export function renderWebManifest(hostHeader, site = {}) {
-  const name = installedAppName(hostHeader, site);
+export function renderWebManifest(hostHeader) {
+  const name = appNameFromHost(hostHeader);
   return JSON.stringify(
     {
       name,
@@ -174,8 +167,8 @@ export function renderWebManifest(hostHeader, site = {}) {
       start_url: "/",
       scope: "/",
       display: "standalone",
-      background_color: "#2a1814",
-      theme_color: "#2a1814",
+      background_color: "#000000",
+      theme_color: "#000000",
       icons: [
         {
           src: "/__grok/icon-180.png",

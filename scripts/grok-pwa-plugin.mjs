@@ -30,8 +30,7 @@ function requestHost(req) {
 
 export function renderInstallPage(hostHeader, url = "/") {
   const template = readFileSync(INSTALL_PAGE_PATH, "utf8");
-  const { site } = snapshotOgIdentity();
-  return renderInstallPageHtml(template, { host: hostHeader, url, site });
+  return renderInstallPageHtml(template, { host: hostHeader, url });
 }
 
 function sendHtml(res, html) {
@@ -54,8 +53,7 @@ function serveGrokPwa(middlewares) {
     }
 
     if (pathOnly === "/__grok/manifest.webmanifest" || pathOnly === "/__grok/manifest.json") {
-      const { site } = snapshotOgIdentity();
-      const body = Buffer.from(renderWebManifest(requestHost(req), site), "utf8");
+      const body = Buffer.from(renderWebManifest(requestHost(req)), "utf8");
       res.statusCode = 200;
       res.setHeader("content-type", "application/manifest+json; charset=utf-8");
       res.setHeader("cache-control", "no-cache");

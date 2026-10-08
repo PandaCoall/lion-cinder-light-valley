@@ -1,10 +1,10 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { C as require_jsx_runtime, X as require_react, b as Link, x as useNavigate } from "../_libs/@tanstack/react-router+[...].mjs";
 import { d as ChevronRight, f as ChevronLeft, i as Settings, l as Headphones, o as List, p as ArrowLeft, t as X } from "../_libs/lucide-react.mjs";
-import { C as chapters, S as cast, T as glossary, b as blocks, c as Route$5, g as recapBank, h as previews, w as codex, x as book } from "./router-BsXXpPu4.mjs";
+import { C as chapters, S as cast, T as glossary, b as blocks, c as Route$5, g as recapBank, h as previews, w as codex, x as book } from "./router-DV7vINS4.mjs";
 import { t as useReader } from "./reader-store-CB2CzwHY.mjs";
 import { a as pageText, c as speakBlocks, i as nearestPlate, l as stopSpeech, n as downloadEpub, o as plateCount, r as minutesToNextPlate, s as setSpeechRate, u as wordCount } from "./book-tools-MYxdNRSU.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/read-BGPTnPLx.js
+//#region node_modules/.nitro/vite/services/ssr/assets/read-1KxLvSB0.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var SOLO_KINDS = /* @__PURE__ */ new Set([

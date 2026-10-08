@@ -113,17 +113,11 @@ function stripInstallParams(url) {
 	const rest = params.toString();
 	return rest ? `${path}?${rest}` : path;
 }
-/** Name shown when the app is installed. A site title wins over the host slug. */
-function installedAppName(hostHeader, site = {}) {
-	const fromSite = String(site.title ?? "").trim();
-	if (fromSite) return fromSite;
-	return appNameFromHost(hostHeader);
+function renderInstallPageHtml(template, { host, url } = {}) {
+	return String(template).replaceAll("{{APP_NAME}}", escapeHtml(appNameFromHost(host))).replaceAll("{{APP_URL}}", escapeHtml(stripInstallParams(url)));
 }
-function renderInstallPageHtml(template, { host, url, site } = {}) {
-	return String(template).replaceAll("{{APP_NAME}}", escapeHtml(installedAppName(host, site))).replaceAll("{{APP_URL}}", escapeHtml(stripInstallParams(url)));
-}
-function renderWebManifest(hostHeader, site = {}) {
-	const name = installedAppName(hostHeader, site);
+function renderWebManifest(hostHeader) {
+	const name = appNameFromHost(hostHeader);
 	return JSON.stringify({
 		name,
 		short_name: name,
@@ -131,8 +125,8 @@ function renderWebManifest(hostHeader, site = {}) {
 		start_url: "/",
 		scope: "/",
 		display: "standalone",
-		background_color: "#000000",
-		theme_color: "#000000",
+		background_color: "#ffe62d",
+		theme_color: "#ffe62d",
 		icons: [{
 			src: "/__grok/icon-180.png",
 			sizes: "180x180",
@@ -145,8 +139,8 @@ function grokPwaHeadTags(appName = DEFAULT_APP_NAME) {
 		["manifest", "<link rel=\"manifest\" href=\"/__grok/manifest.webmanifest\">"],
 		["apple-touch-icon", "<link rel=\"apple-touch-icon\" href=\"/__grok/icon-180.png\">"],
 		["apple-mobile-web-app-title", `<meta name="apple-mobile-web-app-title" content="${escapeHtml(appName)}">`],
-		["apple-mobile-web-app-status-bar-style", "<meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black\">"],
-		["theme-color", "<meta name=\"theme-color\" content=\"#000000\">"]
+		["apple-mobile-web-app-status-bar-style", "<meta name=\"apple-mobile-web-app-status-bar-style\" content=\"default\">"],
+		["theme-color", "<meta name=\"theme-color\" content=\"#ffe62d\">"]
 	];
 }
 var GROK_EXTENSIONS_SCRIPT_SRC = "https://grok.com/grok-app-builder/extensions.js";
@@ -432,15 +426,14 @@ async function grokPwaMiddleware(event, next) {
 	if ((event.req.method ?? "GET").toUpperCase() !== "GET") return next();
 	const path = event.url.pathname;
 	const urlWithQuery = path + event.url.search;
-	if (path === "/__grok/manifest.webmanifest" || path === "/__grok/manifest.json") return new Response(renderWebManifest(requestHost(event), grokOgIdentity.site), { headers: {
+	if (path === "/__grok/manifest.webmanifest" || path === "/__grok/manifest.json") return new Response(renderWebManifest(requestHost(event)), { headers: {
 		"content-type": "application/manifest+json; charset=utf-8",
 		"cache-control": "no-cache"
 	} });
 	if (isInstallQuery(urlWithQuery) && isDocumentPath(path) && acceptsHtml(event.req.headers.get("accept"))) {
 		const html = renderInstallPageHtml(install_page_default, {
 			host: requestHost(event),
-			url: urlWithQuery,
-			site: grokOgIdentity.site
+			url: urlWithQuery
 		});
 		return new Response(html, { headers: {
 			"content-type": "text/html; charset=utf-8",

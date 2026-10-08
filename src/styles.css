@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --desk: #3d281c;
-  --paper: #3a241c;
-  --ink: #f6efe6;
-  --muted: #d7c3b4;
-  --line: #6a4034;
+  --desk: #ffe62d;
+  --paper: #ffffff;
+  --ink: #140814;
+  --muted: #5c3d32;
+  --line: #140814;
   --vermillion: #fd4499;
   --neon-blue: #12b8ff;
   --neon-green: #01dc03;
@@ -14,7 +14,7 @@
   --neon-violet: #df19fb;
   --read-size: 1.1875rem;
   --read-leading: 1.6;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -39,7 +39,7 @@
 
   body {
     margin: 0;
-    background-color: #3d281c;
+    background-color: #ffe62d;
     color: var(--ink);
     font-family: var(--font-sans);
   }
@@ -60,25 +60,31 @@
 }
 
 .folio[data-theme="paper"],
-.folio[data-theme="sepia"],
+.folio[data-theme="sepia"] {
+  --desk: #ffe62d;
+  --paper: #ffffff;
+  --ink: #140814;
+  --muted: #5c3d32;
+  --line: #140814;
+  --vermillion: #fd4499;
+  color-scheme: light;
+}
+
 .folio[data-theme="night"] {
-  --desk: #3d281c;
-  --paper: #3a241c;
+  --desk: #140814;
+  --paper: #241018;
   --ink: #f6efe6;
   --muted: #d7c3b4;
-  --line: #6a4034;
+  --line: #df19fb;
   --vermillion: #fd4499;
   color-scheme: dark;
 }
 
 .folio {
-  background-color: #1a100e;
-  background-image:
-    linear-gradient(90deg, #12b8ff, #01dc03, #ffe62d, #fd4499, #df19fb),
-    url("/brick-wall.jpg");
-  background-size: 100% 4px, 920px auto;
-  background-position: top, center top;
-  background-repeat: no-repeat, repeat;
+  background-color: var(--desk);
+  background-image: linear-gradient(90deg, #12b8ff, #01dc03, #ffe62d, #fd4499, #df19fb);
+  background-size: 100% 6px;
+  background-repeat: no-repeat;
 }
 
 .folio button.bg-ink,

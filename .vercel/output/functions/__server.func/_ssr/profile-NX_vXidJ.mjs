@@ -1,12 +1,12 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { C as require_jsx_runtime, X as require_react, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { n as hasGateSessionMarker } from "./router-DyxNjQZV.mjs";
+import { n as hasGateSessionMarker } from "./router-BsXXpPu4.mjs";
 import { t as AppNav } from "./nav-CzuovPGK.mjs";
-import { r as signOut } from "./client-DAYW5Jyo.mjs";
+import { r as signOut } from "./client-B2jHe3Cm.mjs";
 import { t as useReader } from "./reader-store-CB2CzwHY.mjs";
-import { n as useOpenBook, t as useCurrentUser } from "./open-book-CEs4xLt7.mjs";
+import { n as useOpenBook, t as useCurrentUser } from "./open-book-DE7a3Ayn.mjs";
 import { t as cacheVolume } from "./book-tools-MYxdNRSU.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/profile-nFpYk7Rz.js
+//#region node_modules/.nitro/vite/services/ssr/assets/profile-NX_vXidJ.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var subscribeToNothing = () => () => {};

@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-CXR9dwt6.js
+//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-DzMTMpgK.js
 var tsrStartManifest = () => ({ routes: {
 	__root__: {
 		filePath: "/workspace/src/routes/__root.tsx",
@@ -16,7 +16,7 @@ var tsrStartManifest = () => ({ routes: {
 			"/api/auth/$"
 		],
 		preloads: [
-			"/assets/index-D85LpEh_.js",
+			"/assets/index-CY8YR0Pf.js",
 			"/assets/rolldown-runtime-CbXtAM7H.js",
 			"/assets/link-CF0Y2t33.js",
 			"/assets/redirect-DmtLUW0N.js",
@@ -26,15 +26,15 @@ var tsrStartManifest = () => ({ routes: {
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/assets/index-D85LpEh_.js"
+			src: "/assets/index-CY8YR0Pf.js"
 		} }]
 	},
 	"/": {
 		filePath: "/workspace/src/routes/index.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/routes-DotFnbVs.js",
-			"/assets/nav-_X1tHelL.js",
+			"/assets/routes-D2qgVW7Q.js",
+			"/assets/nav-Bn0npejb.js",
 			"/assets/volume-DcJVEiFl.js",
 			"/assets/open-book-DSXX-FDv.js",
 			"/assets/reader-store-vE3FORXM.js"
@@ -44,9 +44,9 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "/workspace/src/routes/discover.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/discover-sHGtqYPy.js",
-			"/assets/book-tools-DreU5e-k.js",
-			"/assets/nav-_X1tHelL.js",
+			"/assets/discover-DONhjxVx.js",
+			"/assets/book-tools-DfU3EE7Y.js",
+			"/assets/nav-Bn0npejb.js",
 			"/assets/open-book-DSXX-FDv.js",
 			"/assets/reader-store-vE3FORXM.js"
 		]
@@ -55,23 +55,23 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "/workspace/src/routes/editor.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/editor-C2SquM_i.js",
-			"/assets/nav-_X1tHelL.js",
+			"/assets/editor-xs3b7Rop.js",
+			"/assets/nav-Bn0npejb.js",
 			"/assets/reader-store-vE3FORXM.js"
 		]
 	},
 	"/login": {
 		filePath: "/workspace/src/routes/login.tsx",
 		children: void 0,
-		preloads: ["/assets/login-D-YwPOR7.js", "/assets/client-2DAqAdDf.js"]
+		preloads: ["/assets/login-BQeg_54y.js", "/assets/client-2DAqAdDf.js"]
 	},
 	"/profile": {
 		filePath: "/workspace/src/routes/profile.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/profile-BROYXnJI.js",
-			"/assets/book-tools-DreU5e-k.js",
-			"/assets/nav-_X1tHelL.js",
+			"/assets/profile-B7S758Yj.js",
+			"/assets/book-tools-DfU3EE7Y.js",
+			"/assets/nav-Bn0npejb.js",
 			"/assets/client-2DAqAdDf.js",
 			"/assets/open-book-DSXX-FDv.js",
 			"/assets/reader-store-vE3FORXM.js"
@@ -81,8 +81,8 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "/workspace/src/routes/read.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/read-DME4iYyr.js",
-			"/assets/book-tools-DreU5e-k.js",
+			"/assets/read-DjsNbJME.js",
+			"/assets/book-tools-DfU3EE7Y.js",
 			"/assets/volume-DcJVEiFl.js",
 			"/assets/reader-store-vE3FORXM.js"
 		]
@@ -91,8 +91,8 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "/workspace/src/routes/shelf.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/shelf-BnXJht8I.js",
-			"/assets/nav-_X1tHelL.js",
+			"/assets/shelf-BRRd9gFV.js",
+			"/assets/nav-Bn0npejb.js",
 			"/assets/open-book-DSXX-FDv.js",
 			"/assets/reader-store-vE3FORXM.js"
 		]
@@ -101,8 +101,8 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "/workspace/src/routes/studio.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/studio-B-uJKEvi.js",
-			"/assets/nav-_X1tHelL.js",
+			"/assets/studio-BqQpeehM.js",
+			"/assets/nav-Bn0npejb.js",
 			"/assets/reader-store-vE3FORXM.js"
 		]
 	},
@@ -110,8 +110,8 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "/workspace/src/routes/write.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/write-BxI4JjLG.js",
-			"/assets/nav-_X1tHelL.js",
+			"/assets/write-CYEjUaxD.js",
+			"/assets/nav-Bn0npejb.js",
 			"/assets/reader-store-vE3FORXM.js"
 		]
 	},
@@ -119,8 +119,8 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "/workspace/src/routes/book.$bookId.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/book._bookId-Bs3TRiqH.js",
-			"/assets/nav-_X1tHelL.js",
+			"/assets/book._bookId-_IesZ0Jg.js",
+			"/assets/nav-Bn0npejb.js",
 			"/assets/volume-DcJVEiFl.js",
 			"/assets/open-book-DSXX-FDv.js",
 			"/assets/reader-store-vE3FORXM.js"

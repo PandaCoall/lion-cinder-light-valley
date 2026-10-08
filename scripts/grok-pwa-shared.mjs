@@ -151,14 +151,21 @@ export function stripInstallParams(url) {
   return rest ? `${path}?${rest}` : path;
 }
 
-export function renderInstallPageHtml(template, { host, url } = {}) {
+/** Name shown when the app is installed. A site title wins over the host slug. */
+export function installedAppName(hostHeader, site = {}) {
+  const fromSite = String(site.title ?? "").trim();
+  if (fromSite) return fromSite;
+  return appNameFromHost(hostHeader);
+}
+
+export function renderInstallPageHtml(template, { host, url, site } = {}) {
   return String(template)
-    .replaceAll("{{APP_NAME}}", escapeHtml(appNameFromHost(host)))
+    .replaceAll("{{APP_NAME}}", escapeHtml(installedAppName(host, site)))
     .replaceAll("{{APP_URL}}", escapeHtml(stripInstallParams(url)));
 }
 
-export function renderWebManifest(hostHeader) {
-  const name = appNameFromHost(hostHeader);
+export function renderWebManifest(hostHeader, site = {}) {
+  const name = installedAppName(hostHeader, site);
   return JSON.stringify(
     {
       name,

@@ -626,7 +626,7 @@ var recapBank = [
 	}
 ];
 //#endregion
-//#region node_modules/.nitro/vite/services/ssr/assets/router-DyxNjQZV.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-BsXXpPu4.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var FALLBACK_MESSAGE = "An unexpected error occurred. Try reloading the page.";
@@ -936,8 +936,8 @@ var Route$11 = createRootRoute({
 				content: "LightNov — a book-like reader for light novels, with illustrations."
 			},
 			{
-				name: "theme-color",
-				content: "#3d281c"
+				name: "apple-mobile-web-app-title",
+				content: APP_NAME
 			}
 		],
 		links: [
@@ -984,15 +984,15 @@ var Route$11 = createRootRoute({
 		] })]
 	})
 });
-var $$splitComponentImporter$9 = () => import("./routes-LXShf0q1.mjs");
+var $$splitComponentImporter$9 = () => import("./routes-CvL6sLNw.mjs");
 var Route$10 = createFileRoute("/")({ component: lazyRouteComponent($$splitComponentImporter$9, "component") });
-var $$splitComponentImporter$8 = () => import("./discover-pk_xwc0-.mjs");
+var $$splitComponentImporter$8 = () => import("./discover-CWEsp35l.mjs");
 var Route$9 = createFileRoute("/discover")({
 	validateSearch: (search) => ({ q: typeof search.q === "string" ? search.q : void 0 }),
 	head: () => ({ meta: [{ title: "Discover · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$8, "component")
 });
-var $$splitComponentImporter$7 = () => import("./editor-ULNg9C_8.mjs");
+var $$splitComponentImporter$7 = () => import("./editor-CTM-N-wt.mjs");
 var Route$8 = createFileRoute("/editor")({
 	validateSearch: (search) => ({
 		novel: typeof search.novel === "string" ? search.novel : void 0,
@@ -1001,18 +1001,18 @@ var Route$8 = createFileRoute("/editor")({
 	head: () => ({ meta: [{ title: "Chapter · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$7, "component")
 });
-var $$splitComponentImporter$6 = () => import("./login-CKpmu6R0.mjs");
+var $$splitComponentImporter$6 = () => import("./login-D8N8hP6t.mjs");
 var Route$7 = createFileRoute("/login")({
 	validateSearch: (search) => ({ next: typeof search.next === "string" ? search.next : void 0 }),
 	head: () => ({ meta: [{ title: "Sign in · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$6, "component")
 });
-var $$splitComponentImporter$5 = () => import("./profile-nFpYk7Rz.mjs");
+var $$splitComponentImporter$5 = () => import("./profile-NX_vXidJ.mjs");
 var Route$6 = createFileRoute("/profile")({
 	head: () => ({ meta: [{ title: "Profile · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$5, "component")
 });
-var $$splitComponentImporter$4 = () => import("./read-CkHO3MVn.mjs");
+var $$splitComponentImporter$4 = () => import("./read-BGPTnPLx.mjs");
 var Route$5 = createFileRoute("/read")({
 	validateSearch: (search) => ({
 		chapter: typeof search.chapter === "string" ? search.chapter : void 0,
@@ -1023,12 +1023,12 @@ var Route$5 = createFileRoute("/read")({
 	head: () => ({ meta: [{ title: "Salt & Second Chances · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$4, "component")
 });
-var $$splitComponentImporter$3 = () => import("./shelf-BxuPZxpd.mjs");
+var $$splitComponentImporter$3 = () => import("./shelf-Cadabb7a.mjs");
 var Route$4 = createFileRoute("/shelf")({
 	head: () => ({ meta: [{ title: "Shelf · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-var $$splitComponentImporter$2 = () => import("./studio-67bdGfYZ.mjs");
+var $$splitComponentImporter$2 = () => import("./studio-Bpe0JEGt.mjs");
 var Route$3 = createFileRoute("/studio")({
 	validateSearch: (search) => ({ novel: typeof search.novel === "string" ? search.novel : void 0 }),
 	head: () => ({ meta: [{ title: "Studio · LightNov" }] }),
@@ -1039,7 +1039,7 @@ var Route$2 = createFileRoute("/write")({
 	head: () => ({ meta: [{ title: "Write · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-var $$splitComponentImporter = () => import("./book._bookId-DLDeH6vI.mjs");
+var $$splitComponentImporter = () => import("./book._bookId-CIH67B-E.mjs");
 var Route$1 = createFileRoute("/book/$bookId")({
 	head: ({ params }) => ({ meta: [{ title: `${findStory(params.bookId)?.title ?? "Book"} · LightNov` }] }),
 	component: lazyRouteComponent($$splitComponentImporter, "component")

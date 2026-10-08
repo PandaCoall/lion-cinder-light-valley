@@ -2,7 +2,7 @@
 
 :root {
   --desk: #2a1814;
-  --paper: #f4efe4;
+  --paper: #ffe62d;
   --ink: #f6efe6;
   --muted: #d7c3b4;
   --line: #6a4034;
@@ -65,7 +65,7 @@
 .folio[data-theme="paper"],
 .folio[data-theme="sepia"] {
   --desk: #2a1814;
-  --paper: #f4efe4;
+  --paper: #ffe62d;
   --ink: #f6efe6;
   --muted: #d7c3b4;
   --line: #6a4034;

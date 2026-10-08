@@ -113,17 +113,11 @@ function stripInstallParams(url) {
 	const rest = params.toString();
 	return rest ? `${path}?${rest}` : path;
 }
-/** Name shown when the app is installed. A site title wins over the host slug. */
-function installedAppName(hostHeader, site = {}) {
-	const fromSite = String(site.title ?? "").trim();
-	if (fromSite) return fromSite;
-	return appNameFromHost(hostHeader);
+function renderInstallPageHtml(template, { host, url } = {}) {
+	return String(template).replaceAll("{{APP_NAME}}", escapeHtml(appNameFromHost(host))).replaceAll("{{APP_URL}}", escapeHtml(stripInstallParams(url)));
 }
-function renderInstallPageHtml(template, { host, url, site } = {}) {
-	return String(template).replaceAll("{{APP_NAME}}", escapeHtml(installedAppName(host, site))).replaceAll("{{APP_URL}}", escapeHtml(stripInstallParams(url)));
-}
-function renderWebManifest(hostHeader, site = {}) {
-	const name = installedAppName(hostHeader, site);
+function renderWebManifest(hostHeader) {
+	const name = appNameFromHost(hostHeader);
 	return JSON.stringify({
 		name,
 		short_name: name,
@@ -131,8 +125,8 @@ function renderWebManifest(hostHeader, site = {}) {
 		start_url: "/",
 		scope: "/",
 		display: "standalone",
-		background_color: "#2a1814",
-		theme_color: "#2a1814",
+		background_color: "#000000",
+		theme_color: "#000000",
 		icons: [{
 			src: "/__grok/icon-180.png",
 			sizes: "180x180",
@@ -432,15 +426,14 @@ async function grokPwaMiddleware(event, next) {
 	if ((event.req.method ?? "GET").toUpperCase() !== "GET") return next();
 	const path = event.url.pathname;
 	const urlWithQuery = path + event.url.search;
-	if (path === "/__grok/manifest.webmanifest" || path === "/__grok/manifest.json") return new Response(renderWebManifest(requestHost(event), grokOgIdentity.site), { headers: {
+	if (path === "/__grok/manifest.webmanifest" || path === "/__grok/manifest.json") return new Response(renderWebManifest(requestHost(event)), { headers: {
 		"content-type": "application/manifest+json; charset=utf-8",
 		"cache-control": "no-cache"
 	} });
 	if (isInstallQuery(urlWithQuery) && isDocumentPath(path) && acceptsHtml(event.req.headers.get("accept"))) {
 		const html = renderInstallPageHtml(install_page_default, {
 			host: requestHost(event),
-			url: urlWithQuery,
-			site: grokOgIdentity.site
+			url: urlWithQuery
 		});
 		return new Response(html, { headers: {
 			"content-type": "text/html; charset=utf-8",

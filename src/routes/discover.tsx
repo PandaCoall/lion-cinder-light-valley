@@ -34,7 +34,7 @@ function Discover() {
   const [dx, setDx] = useState(0);
   const [dy, setDy] = useState(0);
   const [undo, setUndo] = useState<{ kind: "skip" | "save"; id: string } | null>(null);
-  const [hearing, setHearing] = useState<"half" | "full" | null>(null);
+  const [hearing, setHearing] = useState(false);
   const drag = useRef({ x: 0, y: 0, dx: 0, dy: 0, on: false });
 
   const cards = useMemo(() => filterStories(query, want, avoid, genre), [query, want, avoid, genre]);
@@ -42,7 +42,7 @@ function Discover() {
 
   useEffect(() => {
     stopSpeech();
-    setHearing(null);
+    setHearing(false);
   }, [story?.id]);
 
   const show = (id: string) => {
@@ -70,17 +70,17 @@ function Discover() {
     advance();
   };
 
-  const listen = (mode: "half" | "full") => {
+  const listen = () => {
     if (!story) return;
-    if (hearing === mode) {
+    if (hearing) {
       stopSpeech();
-      setHearing(null);
+      setHearing(false);
       return;
     }
-    setHearing(mode);
-    const text = sampleSpeech(story.id, mode === "half");
+    setHearing(true);
+    const text = sampleSpeech(story.id, false);
     void speakBlocks([{ kind: "p", text }]).then((played) => {
-      setHearing((current) => (current === mode && played ? null : current));
+      setHearing((current) => (current && played ? false : current));
     });
   };
 
@@ -121,7 +121,7 @@ function Discover() {
       <div className="relative min-h-0 flex-1 px-4 py-4">
         {story ? (
           <article
-            className="relative h-full touch-none overflow-hidden rounded-3xl bg-ink select-none"
+            className="relative flex h-full touch-none flex-col overflow-hidden rounded-3xl border-2 border-[#FFE62D] bg-[#241612] text-[#f6efe6] select-none"
             style={{
               transform: `translate(${dx}px, ${dy}px) rotate(${dx / 28}deg)`,
               transition: drag.current.on ? "none" : "transform 180ms ease",
@@ -157,19 +157,23 @@ function Discover() {
               setDy(0);
             }}
           >
-            <img src={story.cover} alt="" draggable={false} className="pointer-events-none h-[38%] w-full shrink-0 object-cover" />
+            <img src={story.cover} alt="" draggable={false} className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#120c0a] via-[#120c0a]/55 to-transparent" />
             {dx < -36 ? <span className="absolute top-6 left-6 rounded-full bg-paper px-4 py-2 font-sans text-sm text-ink">Skip</span> : null}
             {dx > 36 ? <span className="absolute top-6 right-6 rounded-full bg-paper px-4 py-2 font-sans text-sm text-ink">Save</span> : null}
-            <div className="flex min-h-0 flex-1 flex-col px-5 pt-4 pb-4">
-              <p className="font-sans text-xs text-paper/70">{story.genre} · {story.rating}</p>
+            <div className="relative mt-auto flex flex-col px-5 pt-16 pb-4">
+              <p className="font-sans text-xs text-[#12B8FF]">{story.genre} · {story.rating}</p>
               <h2 className="mt-1 font-serif text-3xl leading-tight">{story.title}</h2>
-              <p className="mt-2 line-clamp-4 font-serif text-lg leading-snug text-paper/90">{story.hook} {story.excerpt}</p>
-              <div className="mt-auto grid grid-cols-2 gap-2 pt-3" onPointerDown={(event) => event.stopPropagation()}>
-                <button type="button" className="h-11 rounded-full border border-paper/50 font-sans text-sm" onClick={() => listen("half")}>
-                  {hearing === "half" ? "Stop" : "Half a chapter"}
+              <p className="mt-2 line-clamp-3 font-serif text-lg leading-snug">{story.hook} {story.excerpt}</p>
+              <div className="mt-4 grid grid-cols-3 gap-2" onPointerDown={(event) => event.stopPropagation()}>
+                <button type="button" className="h-11 rounded-full bg-[#12B8FF] font-sans text-sm text-[#1a100c]" onClick={() => read(story.id)}>
+                  Full Chapter
                 </button>
-                <button type="button" className="h-11 rounded-full bg-paper font-sans text-sm text-ink" onClick={() => listen("full")}>
-                  {hearing === "full" ? "Stop" : "First chapter"}
+                <button type="button" className="h-11 rounded-full bg-[#FFE62D] font-sans text-sm text-[#1a100c]" onClick={listen}>
+                  {hearing ? "Stop" : "Listen"}
+                </button>
+                <button type="button" className="h-11 rounded-full bg-[#FD4499] font-sans text-sm text-[#1a100c]" onClick={save}>
+                  Save
                 </button>
               </div>
             </div>
@@ -194,21 +198,7 @@ function Discover() {
         )}
       </div>
 
-      <div className="grid grid-cols-4 gap-2 px-4 pb-3">
-        <button type="button" disabled={!undo} onClick={undoLast} className="h-12 rounded-full border border-line bg-paper font-sans text-sm disabled:opacity-40">
-          Undo
-        </button>
-        <button type="button" disabled={!story} onClick={skip} className="h-12 rounded-full border border-line bg-paper font-sans text-sm">
-          Skip
-        </button>
-        <button type="button" disabled={!story} onClick={() => story && read(story.id)} className="h-12 rounded-full border border-line bg-paper font-sans text-sm">
-          Read
-        </button>
-        <button type="button" disabled={!story} onClick={save} className="h-12 rounded-full bg-ink font-sans text-sm text-paper">
-          Save
-        </button>
-      </div>
-      <p className="px-4 pb-2 text-center font-sans text-xs text-muted">Swipe left to skip, right to save. The card is the preview.</p>
+      <p className="px-4 pb-2 text-center font-sans text-xs text-muted">Swipe left to skip, right to save.</p>
       <AppNav />
 
       {filters ? (

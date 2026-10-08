@@ -27,10 +27,10 @@ function Home() {
         <h1 className="mt-2 font-serif text-4xl">What will you read?</h1>
       </header>
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-5 py-6 sm:px-8">
-        <Link to="/discover" className="rounded-3xl bg-ink p-6 text-paper">
-          <p className="font-sans text-sm text-paper/70">Start here</p>
+        <Link to="/discover" className="neon-hero rounded-3xl p-6">
+          <p className="font-sans text-sm">Start here</p>
           <p className="mt-2 font-serif text-3xl">Discover</p>
-          <p className="mt-2 font-sans text-sm text-paper/80">Swipe through a cover, a summary, and a listen button.</p>
+          <p className="mt-2 font-sans text-sm">Swipe through a cover, a summary, and a listen button.</p>
         </Link>
 
         <section className="rounded-3xl bg-paper p-5">

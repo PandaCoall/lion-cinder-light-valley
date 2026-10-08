@@ -1,15 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --desk: #e6dfd2;
-  --paper: #f7f3ea;
-  --ink: #1c1915;
-  --muted: #6e665c;
-  --line: #e4d9c8;
-  --vermillion: #c4452d;
+  --desk: #3d281c;
+  --paper: #3a241c;
+  --ink: #f6efe6;
+  --muted: #d7c3b4;
+  --line: #6a4034;
+  --vermillion: #fd4499;
+  --neon-blue: #12b8ff;
+  --neon-green: #01dc03;
+  --neon-yellow: #ffe62d;
+  --neon-pink: #fd4499;
+  --neon-violet: #df19fb;
   --read-size: 1.1875rem;
   --read-leading: 1.6;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -19,9 +24,9 @@
   --color-muted: var(--muted);
   --color-line: var(--line);
   --color-vermillion: var(--vermillion);
-  --color-swatch-paper: #f7f3ea;
-  --color-swatch-sepia: #f3e0c0;
-  --color-swatch-night: #171512;
+  --color-swatch-paper: #12b8ff;
+  --color-swatch-sepia: #ffe62d;
+  --color-swatch-night: #df19fb;
   --font-sans: "Outfit", "Avenir Next", system-ui, sans-serif;
   --font-serif: "Newsreader", "Iowan Old Style", Georgia, serif;
 }
@@ -34,7 +39,7 @@
 
   body {
     margin: 0;
-    background: var(--desk);
+    background-color: #3d281c;
     color: var(--ink);
     font-family: var(--font-sans);
   }
@@ -54,34 +59,42 @@
   }
 }
 
-.folio[data-theme="paper"] {
-  --desk: #e6dfd2;
-  --paper: #f7f3ea;
-  --ink: #1c1915;
-  --muted: #6e665c;
-  --line: #e4d9c8;
-  --vermillion: #c4452d;
-  color-scheme: light;
-}
-
-.folio[data-theme="sepia"] {
-  --desk: #e7d7b8;
-  --paper: #f8e8c9;
-  --ink: #2c2416;
-  --muted: #7a6848;
-  --line: #ead7b0;
-  --vermillion: #b8432a;
-  color-scheme: light;
-}
-
+.folio[data-theme="paper"],
+.folio[data-theme="sepia"],
 .folio[data-theme="night"] {
-  --desk: #0c0b0a;
-  --paper: #171512;
-  --ink: #ebe4d8;
-  --muted: #a89d90;
-  --line: #2e2924;
-  --vermillion: #e07a64;
+  --desk: #3d281c;
+  --paper: #3a241c;
+  --ink: #f6efe6;
+  --muted: #d7c3b4;
+  --line: #6a4034;
+  --vermillion: #fd4499;
   color-scheme: dark;
+}
+
+.folio {
+  background-color: #1a100e;
+  background-image:
+    linear-gradient(90deg, #12b8ff, #01dc03, #ffe62d, #fd4499, #df19fb),
+    url("/brick-wall.jpg");
+  background-size: 100% 4px, 920px auto;
+  background-position: top, center top;
+  background-repeat: no-repeat, repeat;
+}
+
+.folio button.bg-ink,
+.folio a.bg-ink {
+  background-color: #fd4499;
+  color: #1a100c;
+}
+
+.neon-hero {
+  background: #12b8ff;
+  color: #1a100c;
+  box-shadow: inset 0 0 0 3px #ffe62d;
+}
+
+.neon-hero p {
+  color: #1a100c;
 }
 
 .folio[data-size="sm"] {
@@ -323,17 +336,16 @@
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  background:
-    linear-gradient(160deg, rgb(243 236 224), rgb(226 214 196));
-  color: #1c1915;
+  background: #2a1814;
+  color: #f6efe6;
 }
 
 .seal {
   width: 4.5rem;
   height: 4.5rem;
   border-radius: 999px;
-  background: #c4452d;
-  color: #f7f3ea;
+  background: #fd4499;
+  color: #1a100c;
   display: grid;
   place-items: center;
   font-family: var(--font-sans);

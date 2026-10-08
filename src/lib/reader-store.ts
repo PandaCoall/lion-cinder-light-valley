@@ -7,6 +7,19 @@ export type ThemeName = "paper" | "sepia" | "night";
 export type TypeSize = "sm" | "md" | "lg";
 export type ReadMode = "bunko" | "scroll";
 export type FaceName = "newsreader" | "literata" | "fraunces";
+export type ReadWidth = "narrow" | "book" | "wide";
+
+export type PlateDraft = { id: string; src: string; caption: string; after: string };
+export type ChapterDraft = { id: string; title: string; body: string };
+export type Novel = {
+  id: string;
+  title: string;
+  hook: string;
+  genre: string;
+  tropes: string[];
+  chapters: ChapterDraft[];
+  plates: PlateDraft[];
+};
 
 export type Note = { anchor: number; text: string };
 export type Reaction = { key: string; emoji: string };
@@ -19,6 +32,11 @@ type ReaderState = {
   size: TypeSize;
   mode: ReadMode;
   face: FaceName;
+  width: ReadWidth;
+  savedIds: string[];
+  skippedIds: string[];
+  openedIds: string[];
+  novels: Novel[];
   anchor: number;
   chapterTitle: string;
   progress: number;
@@ -45,6 +63,18 @@ type ReaderState = {
   setSize: (size: TypeSize) => void;
   setMode: (mode: ReadMode) => void;
   setFace: (face: FaceName) => void;
+  setWidth: (width: ReadWidth) => void;
+  saveBook: (id: string) => void;
+  unsaveBook: (id: string) => void;
+  skipBook: (id: string) => void;
+  unskipBook: (id: string) => void;
+  markOpened: (id: string) => void;
+  createNovel: () => string;
+  patchNovel: (id: string, patch: Partial<Pick<Novel, "title" | "hook" | "genre" | "tropes">>) => void;
+  addChapter: (novelId: string) => string;
+  patchChapter: (novelId: string, chapterId: string, patch: Partial<ChapterDraft>) => void;
+  addPlate: (novelId: string, plate: PlateDraft) => void;
+  removePlate: (novelId: string, plateId: string) => void;
   setAnchor: (anchor: number, chapterTitle: string, progress: number) => void;
   toggleDogear: (anchor: number) => void;
   togglePlate: (id: string) => void;
@@ -81,6 +111,11 @@ export const useReader = create<ReaderState>()(
       size: "md",
       mode: "bunko",
       face: "newsreader",
+      width: "book",
+      savedIds: [],
+      skippedIds: [],
+      openedIds: [],
+      novels: [],
       anchor: 0,
       chapterTitle: "Salt & Second Chances",
       progress: 0,
@@ -111,6 +146,84 @@ export const useReader = create<ReaderState>()(
       setSize: (size) => set({ size }),
       setMode: (mode) => set({ mode }),
       setFace: (face) => set({ face }),
+      setWidth: (width) => set({ width }),
+      saveBook: (id) =>
+        set((state) => ({
+          savedIds: state.savedIds.includes(id) ? state.savedIds : [id, ...state.savedIds],
+        })),
+      unsaveBook: (id) => set((state) => ({ savedIds: state.savedIds.filter((item) => item !== id) })),
+      skipBook: (id) =>
+        set((state) => ({
+          skippedIds: [id, ...state.skippedIds.filter((item) => item !== id)].slice(0, 12),
+        })),
+      unskipBook: (id) => set((state) => ({ skippedIds: state.skippedIds.filter((item) => item !== id) })),
+      markOpened: (id) =>
+        set((state) => ({
+          openedIds: state.openedIds.includes(id) ? state.openedIds : [...state.openedIds, id],
+        })),
+      createNovel: () => {
+        const id = `novel-${Date.now()}`;
+        set((state) => ({
+          novels: [
+            {
+              id,
+              title: "Untitled volume",
+              hook: "",
+              genre: "Fantasy",
+              tropes: [],
+              chapters: [{ id: "ch-1", title: "Chapter One", body: "" }],
+              plates: [],
+            },
+            ...state.novels,
+          ],
+        }));
+        return id;
+      },
+      patchNovel: (id, patch) =>
+        set((state) => ({
+          novels: state.novels.map((novel) => (novel.id === id ? { ...novel, ...patch } : novel)),
+        })),
+      addChapter: (novelId) => {
+        const id = `ch-${Date.now()}`;
+        set((state) => ({
+          novels: state.novels.map((novel) =>
+            novel.id === novelId
+              ? {
+                  ...novel,
+                  chapters: [...novel.chapters, { id, title: `Chapter ${novel.chapters.length + 1}`, body: "" }],
+                }
+              : novel,
+          ),
+        }));
+        return id;
+      },
+      patchChapter: (novelId, chapterId, patch) =>
+        set((state) => ({
+          novels: state.novels.map((novel) =>
+            novel.id === novelId
+              ? {
+                  ...novel,
+                  chapters: novel.chapters.map((chapter) =>
+                    chapter.id === chapterId ? { ...chapter, ...patch } : chapter,
+                  ),
+                }
+              : novel,
+          ),
+        })),
+      addPlate: (novelId, plate) =>
+        set((state) => ({
+          novels: state.novels.map((novel) =>
+            novel.id === novelId ? { ...novel, plates: [...novel.plates, plate] } : novel,
+          ),
+        })),
+      removePlate: (novelId, plateId) =>
+        set((state) => ({
+          novels: state.novels.map((novel) =>
+            novel.id === novelId
+              ? { ...novel, plates: novel.plates.filter((plate) => plate.id !== plateId) }
+              : novel,
+          ),
+        })),
       setAnchor: (anchor, chapterTitle, progress) =>
         set((state) =>
           state.anchor === anchor &&
@@ -175,6 +288,11 @@ export const useReader = create<ReaderState>()(
         size: state.size,
         mode: state.mode,
         face: state.face,
+        width: state.width,
+        savedIds: state.savedIds,
+        skippedIds: state.skippedIds,
+        openedIds: state.openedIds,
+        novels: state.novels,
         anchor: state.anchor,
         chapterTitle: state.chapterTitle,
         progress: state.progress,

@@ -266,6 +266,22 @@
   --font-serif: "Fraunces", Georgia, serif;
 }
 
+.folio[data-width="narrow"] article.sheet {
+  max-width: 32rem;
+}
+
+.folio[data-width="book"] article.sheet {
+  max-width: 36rem;
+}
+
+.folio[data-width="wide"] article.sheet {
+  max-width: 48rem;
+}
+
+.folio[data-immersive="true"] article.sheet {
+  max-width: none;
+}
+
 .sheet {
   position: relative;
 }

@@ -49,7 +49,7 @@ export function Shelf() {
       <header className="mx-auto flex max-w-5xl items-end justify-between gap-3 px-5 pt-6 pb-2 sm:px-8 sm:pt-8">
         <div>
           <p className="kicker" style={{ textTransform: "none" }}>LightNov</p>
-          <p className="mt-1 font-serif text-lg text-ink">A book, with plates</p>
+          <p className="mt-1 font-serif text-lg text-ink">A book, with illustrations</p>
         </div>
         <div className="flex items-center gap-2">
           <Link to="/discover" className="inline-flex h-11 items-center rounded-full border border-line px-4 font-sans text-sm text-ink">
@@ -98,7 +98,7 @@ export function Shelf() {
           </h1>
           <p className="mt-3 font-serif text-xl text-muted italic">{book.subtitle}</p>
           <p className="mt-5 max-w-xl font-serif text-lg leading-relaxed text-ink">{book.blurb}</p>
-          <p className="mt-3 font-sans text-sm text-muted">Original sample · 2 chapters · color insert · plates</p>
+          <p className="mt-3 font-sans text-sm text-muted">Original sample · 2 chapters · color insert · illustrations</p>
 
           {started ? (
             <p className="mt-6 flex items-center gap-2 font-sans text-sm text-muted">
@@ -140,7 +140,7 @@ export function Shelf() {
               onClick={() => {
                 void cacheVolume().then((ok) => {
                   setOffline(ok);
-                  setNotice(ok ? "Plates saved for offline." : "This browser blocked the offline save.");
+                  setNotice(ok ? "Illustrations saved for offline." : "This browser blocked the offline save.");
                 });
               }}
             >
@@ -217,8 +217,8 @@ export function Shelf() {
             <Fact icon={<BookOpen className="size-4" aria-hidden="true" />} title="Pages">
               Bunko pages or a night scroll. Same volume.
             </Fact>
-            <Fact icon={<ImageIcon className="size-4" aria-hidden="true" />} title="Plates">
-              Color insert first, then plates where the scene needs them.
+            <Fact icon={<ImageIcon className="size-4" aria-hidden="true" />} title="Illustrations">
+              Color pages first, then illustrations where the scene needs them.
             </Fact>
             <Fact icon={<Bookmark className="size-4" aria-hidden="true" />} title="Ribbon">
               Your place stays on this device, and can badge the icon.
@@ -233,7 +233,7 @@ export function Shelf() {
             <p className="kicker">Add to your home screen</p>
             <h2 className="mt-2 font-serif text-3xl">LightNov, on its own</h2>
             <p className="mt-3 font-sans text-sm leading-relaxed text-muted">
-              Install it and it opens without the browser bar. The icon uses this volume’s cover mood. On iPhone: Share, then Add to Home Screen. On Android: the browser menu, then Install app.
+              Install it and it opens without the browser bar. The icon is the LN mark. On iPhone: Share, then Add to Home Screen. On Android: the browser menu, then Install app.
             </p>
             <button type="button" className="mt-6 inline-flex h-12 items-center rounded-full bg-ink px-5 font-sans text-sm text-paper" onClick={() => setInstallOpen(false)}>
               Close

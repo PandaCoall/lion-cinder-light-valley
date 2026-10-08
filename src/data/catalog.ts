@@ -1,4 +1,7 @@
 import type { Block } from "@/data/volume";
+import { blocks } from "@/data/volume";
+
+export const genres = ["Fantasy", "Romance", "Mystery", "Tragedy"] as const;
 
 export const tropes = [
   "Villainess",
@@ -17,6 +20,7 @@ export type StoryCard = {
   id: string;
   title: string;
   hook: string;
+  genre: (typeof genres)[number];
   tropes: string[];
   rating: string;
   excerpt: string;
@@ -30,6 +34,7 @@ export const stories: StoryCard[] = [
     title: "Salt & Second Chances",
     hook: "He drowned on a Tuesday. The harbor gave the lantern back.",
     tropes: ["Second Chance", "Slow Burn", "Mystery", "Competent"],
+    genre: "Fantasy",
     rating: "4.8",
     excerpt: "The tide had come in wrong. Lioren Hale knew the sound of a correct tide.",
     cover: "/plates/cover.jpg",
@@ -40,6 +45,7 @@ export const stories: StoryCard[] = [
     title: "The Letter’s Errand",
     hook: "One letter. No name. The city moves when he looks away.",
     tropes: ["Possessive", "Mystery", "Slow Burn"],
+    genre: "Mystery",
     rating: "4.6",
     excerpt: "The wax was warm. Under his thumb the seal acknowledged him.",
     cover: "/plates/keeper.jpg",
@@ -50,6 +56,7 @@ export const stories: StoryCard[] = [
     title: "A Shirt Left Folded",
     hook: "She folds it again because he said he would come back.",
     tropes: ["Tragedy", "Second Chance", "Love Triangle"],
+    genre: "Tragedy",
     rating: "4.4",
     excerpt: "The shirt was not dirty. She folded it anyway.",
     cover: "/plates/street.jpg",
@@ -106,11 +113,54 @@ export const previews: Record<string, { title: string; blocks: Block[] }> = {
   },
 };
 
+export function findStory(id: string) {
+  return stories.find((story) => story.id === id);
+}
+
+export function sampleSpeech(id: string, half: boolean): string {
+  let text = "";
+  if (id === "salt") {
+    const start = blocks.findIndex((block) => block.kind === "chapter" && block.id === "pier");
+    const end = blocks.findIndex((block, index) => index > start && block.kind === "chapter");
+    text = speechFrom(blocks.slice(start, end < 0 ? undefined : end));
+  } else {
+    const preview = previews[id];
+    text = preview ? speechFrom(preview.blocks) : (stories.find((story) => story.id === id)?.audio ?? "");
+  }
+  const words = text.split(/\s+/).filter(Boolean);
+  const taken = half ? words.slice(0, Math.max(1, Math.ceil(words.length / 2))) : words;
+  return taken.join(" ").slice(0, 1400);
+}
+
+function speechFrom(source: Block[]): string {
+  return source
+    .flatMap((block) => {
+      if (block.kind === "chapter") return [block.title];
+      if (block.kind === "p") return [block.text];
+      return [];
+    })
+    .join(" ");
+}
+
+export function filterStories(query: string, want: string[], avoid: string[], genre: string) {
+  const q = query.trim().toLowerCase();
+  return stories.filter((story) => {
+    if (genre && story.genre !== genre) return false;
+    if (!want.every((trope) => story.tropes.includes(trope))) return false;
+    if (avoid.some((trope) => story.tropes.includes(trope))) return false;
+    if (!q) return true;
+    return [story.title, story.hook, story.excerpt, story.genre, ...story.tropes]
+      .join(" ")
+      .toLowerCase()
+      .includes(q);
+  });
+}
+
 export const retention = [
   { label: "Chapter 1 to 2", value: 71 },
   { label: "Finish the sample", value: 44 },
   { label: "Come back next day", value: 28 },
-  { label: "Open from a plate", value: 36 },
+  { label: "Open from an illustration", value: 36 },
 ];
 
 export const recapBank = [

@@ -11,7 +11,7 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: APP_NAME },
-      { name: "description", content: "LightNov — a book-like reader for light novels, with plates." },
+      { name: "description", content: "LightNov — a book-like reader for light novels, with illustrations." },
       { name: "theme-color", content: "#1c1915" },
     ],
     links: [

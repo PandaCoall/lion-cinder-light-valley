@@ -11,8 +11,15 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DiscoverRouteImport } from './routes/discover'
+import { Route as EditorRouteImport } from './routes/editor'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ReadRouteImport } from './routes/read'
+import { Route as ShelfRouteImport } from './routes/shelf'
+import { Route as StudioRouteImport } from './routes/studio'
 import { Route as WriteRouteImport } from './routes/write'
+import { Route as BookBookIdRouteImport } from './routes/book.$bookId'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -24,9 +31,34 @@ const DiscoverRoute = DiscoverRouteImport.update({
   path: '/discover',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EditorRoute = EditorRouteImport.update({
+  id: '/editor',
+  path: '/editor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReadRoute = ReadRouteImport.update({
   id: '/read',
   path: '/read',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShelfRoute = ShelfRouteImport.update({
+  id: '/shelf',
+  path: '/shelf',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudioRoute = StudioRouteImport.update({
+  id: '/studio',
+  path: '/studio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WriteRoute = WriteRouteImport.update({
@@ -34,39 +66,111 @@ const WriteRoute = WriteRouteImport.update({
   path: '/write',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BookBookIdRoute = BookBookIdRouteImport.update({
+  id: '/book/$bookId',
+  path: '/book/$bookId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/discover': typeof DiscoverRoute
+  '/editor': typeof EditorRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
   '/read': typeof ReadRoute
+  '/shelf': typeof ShelfRoute
+  '/studio': typeof StudioRoute
   '/write': typeof WriteRoute
+  '/book/$bookId': typeof BookBookIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/discover': typeof DiscoverRoute
+  '/editor': typeof EditorRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
   '/read': typeof ReadRoute
+  '/shelf': typeof ShelfRoute
+  '/studio': typeof StudioRoute
   '/write': typeof WriteRoute
+  '/book/$bookId': typeof BookBookIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/discover': typeof DiscoverRoute
+  '/editor': typeof EditorRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
   '/read': typeof ReadRoute
+  '/shelf': typeof ShelfRoute
+  '/studio': typeof StudioRoute
   '/write': typeof WriteRoute
+  '/book/$bookId': typeof BookBookIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/discover' | '/read' | '/write'
+  fullPaths:
+    | '/'
+    | '/discover'
+    | '/editor'
+    | '/login'
+    | '/profile'
+    | '/read'
+    | '/shelf'
+    | '/studio'
+    | '/write'
+    | '/book/$bookId'
+    | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/discover' | '/read' | '/write'
-  id: '__root__' | '/' | '/discover' | '/read' | '/write'
+  to:
+    | '/'
+    | '/discover'
+    | '/editor'
+    | '/login'
+    | '/profile'
+    | '/read'
+    | '/shelf'
+    | '/studio'
+    | '/write'
+    | '/book/$bookId'
+    | '/api/auth/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/discover'
+    | '/editor'
+    | '/login'
+    | '/profile'
+    | '/read'
+    | '/shelf'
+    | '/studio'
+    | '/write'
+    | '/book/$bookId'
+    | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DiscoverRoute: typeof DiscoverRoute
+  EditorRoute: typeof EditorRoute
+  LoginRoute: typeof LoginRoute
+  ProfileRoute: typeof ProfileRoute
   ReadRoute: typeof ReadRoute
+  ShelfRoute: typeof ShelfRoute
+  StudioRoute: typeof StudioRoute
   WriteRoute: typeof WriteRoute
+  BookBookIdRoute: typeof BookBookIdRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -85,11 +189,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiscoverRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/editor': {
+      id: '/editor'
+      path: '/editor'
+      fullPath: '/editor'
+      preLoaderRoute: typeof EditorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/read': {
       id: '/read'
       path: '/read'
       fullPath: '/read'
       preLoaderRoute: typeof ReadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shelf': {
+      id: '/shelf'
+      path: '/shelf'
+      fullPath: '/shelf'
+      preLoaderRoute: typeof ShelfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/studio': {
+      id: '/studio'
+      path: '/studio'
+      fullPath: '/studio'
+      preLoaderRoute: typeof StudioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/write': {
@@ -99,14 +238,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WriteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/book/$bookId': {
+      id: '/book/$bookId'
+      path: '/book/$bookId'
+      fullPath: '/book/$bookId'
+      preLoaderRoute: typeof BookBookIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DiscoverRoute: DiscoverRoute,
+  EditorRoute: EditorRoute,
+  LoginRoute: LoginRoute,
+  ProfileRoute: ProfileRoute,
   ReadRoute: ReadRoute,
+  ShelfRoute: ShelfRoute,
+  StudioRoute: StudioRoute,
   WriteRoute: WriteRoute,
+  BookBookIdRoute: BookBookIdRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

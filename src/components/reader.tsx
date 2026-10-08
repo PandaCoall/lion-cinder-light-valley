@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ChevronLeft, ChevronRight, List, Settings, X } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Headphones, List, Settings, X } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { blocks as printed, book, cast, chapters, codex, glossary, type Block } from "@/data/volume";
 import { previews, recapBank } from "@/data/catalog";
@@ -20,6 +20,8 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
   const setAnchor = useReader((state) => state.setAnchor);
   const mode = useReader((state) => state.mode);
   const face = useReader((state) => state.face);
+  const width = useReader((state) => state.width);
+  const setWidth = useReader((state) => state.setWidth);
   const setMode = useReader((state) => state.setMode);
   const setFace = useReader((state) => state.setFace);
   const dogears = useReader((state) => state.dogears);
@@ -73,7 +75,6 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
   const pendingTurn = useRef<number | null>(null);
   const justToggled = useRef(0);
   const suppressClick = useRef(false);
-  const sought = useRef(false);
 
   const measure = useCallback(() => {
     const body = bodyRef.current;
@@ -132,24 +133,35 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
   }, [measure]);
 
   useEffect(() => {
-    if (sought.current) return;
     if (!chapter && !plate) return;
     const index = plate
       ? blocks.findIndex((block) => block.kind === "plate" && block.id === plate)
       : blocks.findIndex((block) => block.kind === "chapter" && block.id === chapter);
-    sought.current = true;
-    if (index >= 0) {
-      const title = blocks[index];
-      const label =
-        title?.kind === "chapter" ? title.title : title?.kind === "plate" ? title.caption : book.title;
-      setAnchor(index, label, index / (blocks.length - 1));
-    }
-    void navigate({ to: "/read", search: {}, replace: true });
-  }, [chapter, plate, navigate, setAnchor]);
+    if (index < 0) return;
+    const nextChapter = blocks.findIndex((block, at) => at > index && block.kind === "chapter");
+    const current = useReader.getState().anchor;
+    const outside = plate
+      ? current !== index
+      : current < index || (nextChapter >= 0 && current >= nextChapter);
+    if (!outside) return;
+    const title = blocks[index];
+    const label =
+      title?.kind === "chapter" ? title.title : title?.kind === "plate" ? title.caption : book.title;
+    setAnchor(index, label, index / Math.max(1, blocks.length - 1));
+  }, [chapter, plate, blocks, setAnchor]);
 
+  const chapterIndex = chapter
+    ? blocks.findIndex((block) => block.kind === "chapter" && block.id === chapter)
+    : -1;
+  const nextChapterIndex =
+    chapterIndex >= 0
+      ? blocks.findIndex((block, index) => index > chapterIndex && block.kind === "chapter")
+      : -1;
   const insertPlates = blocks.filter((block): block is Extract<Block, { kind: "plate" }> => block.kind === "plate" && block.insert === true);
   const hasAfterword = blocks.some((block) => block.kind === "afterword");
   const view = pages.filter((group) => {
+    if (chapterIndex >= 0 && group.every((index) => index < chapterIndex)) return false;
+    if (nextChapterIndex >= 0 && group.every((index) => index >= nextChapterIndex)) return false;
     const hiddenInsert = group.every((index) => {
       const block = blocks[index];
       return block?.kind === "insert" || (block?.kind === "plate" && block.insert);
@@ -284,11 +296,12 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
       index / (blocks.length - 1),
     );
     setPanel(null);
+    void navigate({ to: "/read", search: { chapter: id, own, preview } });
   };
 
   const chapterLabel = (() => {
     let title = book.volume;
-    for (const group of pages.slice(0, page + 1)) {
+    for (const group of view.slice(0, page + 1)) {
       for (const index of group) {
         const block = blocks[index];
         if (block?.kind === "chapter") title = block.title;
@@ -303,6 +316,7 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
       data-theme={theme}
       data-size={size}
       data-face={face}
+      data-width={width}
       data-mode={mode}
       data-immersive={chrome ? "false" : "true"}
       onPointerUp={(event) => {
@@ -359,6 +373,23 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
         </button>
         <button
           type="button"
+          aria-label={hearing ? "Stop reading aloud" : "Listen to this page"}
+          onClick={() => {
+            if (hearing) {
+              stopSpeech();
+              setHearing(false);
+              return;
+            }
+            bumpListens();
+            setHearing(true);
+            void speakBlocks(mode === "scroll" ? blocks : pageBlocks, rate).finally(() => setHearing(false));
+          }}
+          className="inline-flex size-11 items-center justify-center rounded-full text-ink"
+        >
+          <Headphones className="size-5" />
+        </button>
+        <button
+          type="button"
           aria-label="Reading settings"
           onClick={() => setPanel(panel === "settings" ? null : "settings")}
           className="inline-flex size-11 items-center justify-center rounded-full text-ink"
@@ -368,7 +399,7 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
       </header>
 
       <main className={chrome ? "flex h-full items-stretch justify-center px-3 pt-16 pb-20 sm:px-8" : "fixed inset-0 z-10"}>
-        <article className={`sheet relative flex h-full w-full flex-col overflow-hidden bg-paper ${chrome ? "max-w-xl" : "max-w-none"}`}>
+        <article className={`sheet relative flex h-full w-full flex-col overflow-hidden bg-paper ${chrome ? "" : "max-w-none"}`}>
           <button
             type="button"
             className="ribbon"
@@ -396,7 +427,7 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
               </Link>
               {insertPlates.length ? (
                 <button type="button" className="font-sans text-sm text-muted" onClick={() => setInsertOpen(true)}>
-                  Insert
+                  Illustrations
                 </button>
               ) : null}
             </div>
@@ -540,7 +571,7 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
           Prev
         </button>
         <p className="font-sans text-xs text-muted">
-          {minutesToNextPlate(anchor)} min to the next plate
+          {minutesToNextPlate(anchor)} min to the next illustration
         </p>
         <button
           type="button"
@@ -571,7 +602,7 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
               <ol className="flex-1 overflow-auto px-5 pb-8">
                 <li>
                   <button type="button" onClick={() => { setInsertOpen(true); setPanel(null); }} className="flex min-h-14 w-full items-center text-left font-serif text-lg">
-                    Color insert
+                    Illustrations
                   </button>
                 </li>
                 {blocks.filter((block) => block.kind === "plate" && !block.insert && block.id !== "omake").map((block) => {
@@ -632,7 +663,7 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
                 <button type="button" className="h-12 rounded-full border border-line font-sans text-sm" onClick={() => toggleDogear(anchor)}>
                   {dogears.includes(anchor) ? "Dog-ear removed" : "Dog-ear this page"}
                 </button>
-                <p className="font-sans text-sm text-muted">{dogears.length} dog-ears · {savedPlates.length} plates saved</p>
+                <p className="font-sans text-sm text-muted">{dogears.length} dog-ears · {savedPlates.length} illustrations saved</p>
                 <label className="font-sans text-sm text-muted">
                   Private note
                   <textarea value={noteDraft} onChange={(event) => setNoteDraft(event.target.value)} className="mt-2 h-24 w-full rounded-2xl border border-line bg-paper p-3 text-ink" />
@@ -705,6 +736,14 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
                     <FaceButton name="fraunces" current={face} onPick={setFace} label="Fraunces" />
                   </div>
                 </fieldset>
+                <fieldset>
+                  <legend className="kicker">Width</legend>
+                  <div className="mt-3 grid grid-cols-3 gap-2">
+                    <button type="button" onClick={() => setWidth("narrow")} className={`h-11 rounded-full border font-sans text-sm ${width === "narrow" ? "border-vermillion" : "border-line"}`}>Narrow</button>
+                    <button type="button" onClick={() => setWidth("book")} className={`h-11 rounded-full border font-sans text-sm ${width === "book" ? "border-vermillion" : "border-line"}`}>Book</button>
+                    <button type="button" onClick={() => setWidth("wide")} className={`h-11 rounded-full border font-sans text-sm ${width === "wide" ? "border-vermillion" : "border-line"}`}>Wide</button>
+                  </div>
+                </fieldset>
                 <div className="grid gap-2">
                   <button type="button" className="h-12 rounded-full border border-line font-sans text-sm" onClick={() => { bumpListens(); setHearing(true); void speakBlocks(mode === "scroll" ? blocks : pageBlocks, rate).finally(() => setHearing(false)); }}>
                     {hearing ? "Reading" : "Listen"}
@@ -769,7 +808,7 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
               setLitPlate(null);
             }}
           >
-            Pass this plate
+            Pass this illustration
           </button>
         </div>
       ) : null}
@@ -870,7 +909,7 @@ function LiveBlock({
     return (
       <div className="flex h-full flex-col justify-center">
         <p className="kicker">Color insert</p>
-        <h1 className="mt-4 font-serif text-4xl leading-tight">Four plates, before the prose</h1>
+        <h1 className="mt-4 font-serif text-4xl leading-tight">Four illustrations, before the prose</h1>
         <p className="mt-4 font-serif text-lg text-muted">Turn the page. The story starts after the insert.</p>
       </div>
     );
@@ -931,7 +970,7 @@ function LiveBlock({
       <div className="flex h-full flex-col justify-center">
         <p className="kicker">Colophon</p>
         <p className="mt-4 font-serif text-4xl tabular-nums">{wordCount().toLocaleString()} words</p>
-        <p className="mt-2 font-serif text-xl text-muted">{plateCount()} plates in this volume</p>
+        <p className="mt-2 font-serif text-xl text-muted">{plateCount()} illustrations in this volume</p>
         <p className="mt-6 font-sans text-sm text-muted">Set for LightNov. Paper, ribbon, and a short haptic on the turn.</p>
       </div>
     );
@@ -1104,7 +1143,7 @@ function PlateSave({ id }: { id: string; savedHint?: boolean }) {
   const toggle = useReader((state) => state.togglePlate);
   return (
     <button type="button" className="font-sans text-xs text-vermillion" onClick={() => toggle(id)}>
-      {saved ? "Saved" : "Save plate"}
+      {saved ? "Saved" : "Save illustration"}
     </button>
   );
 }

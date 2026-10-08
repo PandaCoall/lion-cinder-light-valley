@@ -53,7 +53,7 @@ let voiceUrl: string | null = null;
 function pageSpeech(pageBlocks: Block[]): string {
   const chunks: string[] = [];
   for (const block of pageBlocks) {
-    if (block.kind === "plate") chunks.push(`Plate. ${block.caption}`);
+    if (block.kind === "plate") chunks.push(`Illustration. ${block.caption}`);
     if (block.kind === "p") chunks.push(block.text);
     if (block.kind === "chapter") chunks.push(block.title);
     if (block.kind === "afterword") chunks.push("Afterword.");

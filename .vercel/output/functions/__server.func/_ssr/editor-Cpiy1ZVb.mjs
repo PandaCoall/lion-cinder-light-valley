@@ -1,9 +1,9 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { C as require_jsx_runtime, Y as require_react, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { u as Route$8 } from "./router-DPwWM3hJ.mjs";
+import { u as Route$8 } from "./router-BdPLw30A.mjs";
 import { t as AppNav } from "./nav-CzuovPGK.mjs";
 import { t as useReader } from "./reader-store-CB2CzwHY.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/editor-8bMLWJp8.js
+//#region node_modules/.nitro/vite/services/ssr/assets/editor-Cpiy1ZVb.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function Editor() {

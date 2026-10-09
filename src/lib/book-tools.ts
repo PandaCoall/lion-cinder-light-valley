@@ -71,6 +71,7 @@ export async function speakBlocks(
   if (!pageText(pageBlocks).trim()) return false;
   onNote?.("Playing");
   const audio = new Audio(url);
+  audio.volume = 1;
   audio.preload = "auto";
   audio.playsInline = true;
   audio.playbackRate = rate;

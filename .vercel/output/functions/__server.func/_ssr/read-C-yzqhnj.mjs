@@ -1,10 +1,10 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { C as require_jsx_runtime, Y as require_react, b as Link, x as useNavigate } from "../_libs/@tanstack/react-router+[...].mjs";
 import { d as ChevronRight, f as ChevronLeft, i as Settings, l as Headphones, o as List, p as ArrowLeft, t as X } from "../_libs/lucide-react.mjs";
-import { C as chapters, S as cast, T as glossary, b as blocks, c as Route$5, g as recapBank, h as previews, w as codex, x as book } from "./router-DPwWM3hJ.mjs";
+import { C as chapters, S as cast, T as glossary, b as blocks, c as Route$5, g as recapBank, h as previews, w as codex, x as book } from "./router-BdPLw30A.mjs";
 import { t as useReader } from "./reader-store-CB2CzwHY.mjs";
-import { a as pageText, c as speakBlocks, i as nearestPlate, l as stopSpeech, n as downloadEpub, o as plateCount, r as minutesToNextPlate, s as setSpeechRate, u as wordCount } from "./book-tools-Dlk4OgCh.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/read-C2bk-q0H.js
+import { a as pageText, c as speakBlocks, i as nearestPlate, l as stopSpeech, n as downloadEpub, o as plateCount, r as minutesToNextPlate, s as setSpeechRate, u as wordCount } from "./book-tools-DwUNXMLj.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/read-C-yzqhnj.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var SOLO_KINDS = /* @__PURE__ */ new Set([
@@ -424,7 +424,7 @@ function Reader({ chapter, plate, own, preview }) {
 							}
 							bumpListens();
 							setHearing(true);
-							setVoiceNote("Casting this page");
+							setVoiceNote("Playing");
 							speakBlocks(mode === "scroll" ? blocks$1 : pageBlocks, rate, setVoiceNote).finally(() => {
 								setHearing(false);
 								setVoiceNote("");
@@ -1009,7 +1009,7 @@ function Reader({ chapter, plate, own, preview }) {
 										onClick: () => {
 											bumpListens();
 											setHearing(true);
-											setVoiceNote("Casting this page");
+											setVoiceNote("Playing");
 											speakBlocks(mode === "scroll" ? blocks$1 : pageBlocks, rate, setVoiceNote).finally(() => {
 												setHearing(false);
 												setVoiceNote("");

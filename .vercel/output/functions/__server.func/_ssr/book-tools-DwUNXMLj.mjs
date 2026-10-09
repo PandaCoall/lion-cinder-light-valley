@@ -1,5 +1,5 @@
-import { b as blocks, x as book } from "./router-DPwWM3hJ.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/book-tools-Dlk4OgCh.js
+import { b as blocks, x as book } from "./router-BdPLw30A.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/book-tools-DwUNXMLj.js
 var PLATES = [
 	"/plates/cover.jpg",
 	"/plates/portrait.jpg",
@@ -59,6 +59,7 @@ async function speakBlocks(pageBlocks, rate = 1, onNote, clipId = "salt") {
 	if (!pageText(pageBlocks).trim()) return false;
 	onNote?.("Playing");
 	const audio = new Audio(url);
+	audio.volume = 1;
 	audio.preload = "auto";
 	audio.playsInline = true;
 	audio.playbackRate = rate;

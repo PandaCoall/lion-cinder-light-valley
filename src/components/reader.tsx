@@ -384,7 +384,7 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
             }
             bumpListens();
             setHearing(true);
-            setVoiceNote("Casting this page");
+            setVoiceNote("Playing");
             void speakBlocks(mode === "scroll" ? blocks : pageBlocks, rate, setVoiceNote).finally(() => {
               setHearing(false);
               setVoiceNote("");
@@ -752,7 +752,7 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
                   </div>
                 </fieldset>
                 <div className="grid gap-2">
-                  <button type="button" className="h-12 rounded-full border border-line font-sans text-sm" onClick={() => { bumpListens(); setHearing(true); setVoiceNote("Casting this page"); void speakBlocks(mode === "scroll" ? blocks : pageBlocks, rate, setVoiceNote).finally(() => { setHearing(false); setVoiceNote(""); }); }}>
+                  <button type="button" className="h-12 rounded-full border border-line font-sans text-sm" onClick={() => { bumpListens(); setHearing(true); setVoiceNote("Playing"); void speakBlocks(mode === "scroll" ? blocks : pageBlocks, rate, setVoiceNote).finally(() => { setHearing(false); setVoiceNote(""); }); }}>
                     {hearing ? "Reading" : "Listen"}
                   </button>
                   <div className="flex gap-2">

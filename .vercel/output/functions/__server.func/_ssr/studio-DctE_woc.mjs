@@ -1,8 +1,8 @@
 import { C as require_jsx_runtime, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { m as genres, s as Route$3, y as tropes } from "./router-DPwWM3hJ.mjs";
+import { m as genres, s as Route$3, y as tropes } from "./router-BdPLw30A.mjs";
 import { t as AppNav } from "./nav-CzuovPGK.mjs";
 import { t as useReader } from "./reader-store-CB2CzwHY.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/studio-9ypp6Xvf.js
+//#region node_modules/.nitro/vite/services/ssr/assets/studio-DctE_woc.js
 var import_jsx_runtime = require_jsx_runtime();
 function Studio() {
 	const { novel: novelId } = Route$3.useSearch();

@@ -1,11 +1,11 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { C as require_jsx_runtime, Y as require_react, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { _ as sampleSpeech, d as Route$9, f as filterStories, m as genres, y as tropes } from "./router-DPwWM3hJ.mjs";
+import { _ as sampleSpeech, d as Route$9, f as filterStories, m as genres, y as tropes } from "./router-BdPLw30A.mjs";
 import { t as AppNav } from "./nav-CzuovPGK.mjs";
 import { t as useReader } from "./reader-store-CB2CzwHY.mjs";
-import { n as useOpenBook } from "./open-book-N_RmMuJ4.mjs";
-import { c as speakBlocks, l as stopSpeech } from "./book-tools-Dlk4OgCh.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/discover-k0KPQz78.js
+import { n as useOpenBook } from "./open-book-duYo-G_l.mjs";
+import { c as speakBlocks, l as stopSpeech } from "./book-tools-DwUNXMLj.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/discover-BVOcEXV1.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function Discover() {
@@ -78,7 +78,7 @@ function Discover() {
 			return;
 		}
 		setHearing(true);
-		setVoiceNote("Casting the chapter");
+		setVoiceNote("Playing");
 		const text = sampleSpeech(story.id, false);
 		speakBlocks([{
 			kind: "p",

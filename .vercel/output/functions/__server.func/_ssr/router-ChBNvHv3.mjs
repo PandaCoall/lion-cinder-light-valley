@@ -626,7 +626,7 @@ var recapBank = [
 	}
 ];
 //#endregion
-//#region node_modules/.nitro/vite/services/ssr/assets/router-Cuu7FmG5.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-ChBNvHv3.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var FALLBACK_MESSAGE = "An unexpected error occurred. Try reloading the page.";
@@ -988,15 +988,15 @@ var Route$11 = createRootRoute({
 		] })]
 	})
 });
-var $$splitComponentImporter$9 = () => import("./routes-CZ05cXOP.mjs");
+var $$splitComponentImporter$9 = () => import("./routes-EOwMbuOu.mjs");
 var Route$10 = createFileRoute("/")({ component: lazyRouteComponent($$splitComponentImporter$9, "component") });
-var $$splitComponentImporter$8 = () => import("./discover-CmKXIP2W.mjs");
+var $$splitComponentImporter$8 = () => import("./discover-B2lODelS.mjs");
 var Route$9 = createFileRoute("/discover")({
 	validateSearch: (search) => ({ q: typeof search.q === "string" ? search.q : void 0 }),
 	head: () => ({ meta: [{ title: "Discover · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$8, "component")
 });
-var $$splitComponentImporter$7 = () => import("./editor-U6573sef.mjs");
+var $$splitComponentImporter$7 = () => import("./editor-5qAES-8z.mjs");
 var Route$8 = createFileRoute("/editor")({
 	validateSearch: (search) => ({
 		novel: typeof search.novel === "string" ? search.novel : void 0,
@@ -1005,18 +1005,18 @@ var Route$8 = createFileRoute("/editor")({
 	head: () => ({ meta: [{ title: "Chapter · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$7, "component")
 });
-var $$splitComponentImporter$6 = () => import("./login-D1pQ5TP7.mjs");
+var $$splitComponentImporter$6 = () => import("./login-CMxrXWoL.mjs");
 var Route$7 = createFileRoute("/login")({
 	validateSearch: (search) => ({ next: typeof search.next === "string" ? search.next : void 0 }),
 	head: () => ({ meta: [{ title: "Sign in · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$6, "component")
 });
-var $$splitComponentImporter$5 = () => import("./profile-D6M2GV-5.mjs");
+var $$splitComponentImporter$5 = () => import("./profile-DczrQHTF.mjs");
 var Route$6 = createFileRoute("/profile")({
 	head: () => ({ meta: [{ title: "Profile · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$5, "component")
 });
-var $$splitComponentImporter$4 = () => import("./read-ve6uaaH8.mjs");
+var $$splitComponentImporter$4 = () => import("./read-BAnvSbr5.mjs");
 var Route$5 = createFileRoute("/read")({
 	validateSearch: (search) => ({
 		chapter: typeof search.chapter === "string" ? search.chapter : void 0,
@@ -1027,12 +1027,12 @@ var Route$5 = createFileRoute("/read")({
 	head: () => ({ meta: [{ title: "Salt & Second Chances · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$4, "component")
 });
-var $$splitComponentImporter$3 = () => import("./shelf-CYV-o3Qx.mjs");
+var $$splitComponentImporter$3 = () => import("./shelf-RnMK4nka.mjs");
 var Route$4 = createFileRoute("/shelf")({
 	head: () => ({ meta: [{ title: "Shelf · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-var $$splitComponentImporter$2 = () => import("./studio-ldgqScyt.mjs");
+var $$splitComponentImporter$2 = () => import("./studio-vn5mzdzT.mjs");
 var Route$3 = createFileRoute("/studio")({
 	validateSearch: (search) => ({ novel: typeof search.novel === "string" ? search.novel : void 0 }),
 	head: () => ({ meta: [{ title: "Studio · LightNov" }] }),
@@ -1043,7 +1043,7 @@ var Route$2 = createFileRoute("/write")({
 	head: () => ({ meta: [{ title: "Write · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-var $$splitComponentImporter = () => import("./book._bookId-DYHvtnhm.mjs");
+var $$splitComponentImporter = () => import("./book._bookId-BiuHH9NV.mjs");
 var Route$1 = createFileRoute("/book/$bookId")({
 	head: ({ params }) => ({ meta: [{ title: `${findStory(params.bookId)?.title ?? "Book"} · LightNov` }] }),
 	component: lazyRouteComponent($$splitComponentImporter, "component")
@@ -10639,7 +10639,9 @@ var auth = betterAuth({
 });
 async function handle(request) {
 	try {
-		await ensureAuthSchema();
+		try {
+			await ensureAuthSchema();
+		} catch {}
 		const response = await auth.handler(request);
 		if (response.status < 500) return response;
 		const text = await response.text();
@@ -10649,7 +10651,8 @@ async function handle(request) {
 		});
 		return Response.json({ message: "Sign-in failed. Please try again." }, { status: response.status });
 	} catch (error) {
-		const message = (error instanceof Error ? error.message : "Sign-in failed. Please try again.").replace(/postgres(?:ql)?:\/\/\S+/gi, "database");
+		const raw = error instanceof Error ? error.message : "Sign-in failed. Please try again.";
+		const message = /ENOTFOUND|ECONNREFUSED|EAI_AGAIN/.test(raw) ? "Sign-in could not be saved because the site database is not connected." : raw.replace(/postgres(?:ql)?:\/\/\S+/gi, "database");
 		return Response.json({ message }, { status: 500 });
 	}
 }

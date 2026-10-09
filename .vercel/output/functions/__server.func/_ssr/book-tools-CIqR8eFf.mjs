@@ -1,4 +1,4 @@
-import { b as blocks, x as book } from "./router-Cuu7FmG5.mjs";
+import { b as blocks, x as book } from "./router-ChBNvHv3.mjs";
 //#region node_modules/.nitro/vite/services/ssr/assets/book-tools-CIqR8eFf.js
 var PLATES = [
 	"/plates/cover.jpg",

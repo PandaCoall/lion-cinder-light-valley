@@ -1,5 +1,3 @@
-import { performChapter } from "@/lib/performance";
-import { playBeats, primeVoice, stopVoice } from "@/lib/voice-engine";
 import { blocks, book, type Block } from "@/data/volume";
 
 const PLATES = ["/plates/cover.jpg", "/plates/portrait.jpg", "/plates/keeper.jpg", "/plates/street.jpg"];
@@ -48,44 +46,54 @@ export function pageText(pageBlocks: Block[]): string {
 }
 
 let voiceToken = 0;
+let clip: HTMLAudioElement | null = null;
 
-function pageSpeech(pageBlocks: Block[]): string {
-  const chunks: string[] = [];
-  for (const block of pageBlocks) {
-    if (block.kind === "plate") chunks.push(`Illustration. ${block.caption}`);
-    if (block.kind === "p") chunks.push(block.text);
-    if (block.kind === "chapter") chunks.push(block.title);
-    if (block.kind === "afterword") chunks.push("Afterword.");
-  }
-  return chunks.join(" ");
-}
+const CLIPS: Record<string, string> = {
+  salt: "/audio/salt.mp3",
+  errand: "/audio/errand.mp3",
+  shirt: "/audio/shirt.mp3",
+};
 
 export function setSpeechRate(rate: number) {
-  void rate;
+  if (clip) clip.playbackRate = rate;
 }
 
 export async function speakBlocks(
   pageBlocks: Block[],
   rate = 1,
   onNote?: (note: string) => void,
+  clipId = "salt",
 ): Promise<boolean> {
   stopSpeech();
   const mine = voiceToken;
-  primeVoice();
-  const text = pageSpeech(pageBlocks);
-  if (!text.trim()) return false;
-  const beats = performChapter(text, 4);
-  if (!beats.length) return false;
+  const url = CLIPS[clipId];
+  if (!url || typeof Audio === "undefined") return false;
+  if (!pageText(pageBlocks).trim()) return false;
+  onNote?.("Playing");
+  const audio = new Audio(url);
+  audio.preload = "auto";
+  audio.playsInline = true;
+  audio.playbackRate = rate;
+  clip = audio;
   try {
-    return await playBeats(beats, rate, onNote, () => mine === voiceToken);
+    await audio.play();
   } catch {
     return false;
   }
+  if (mine !== voiceToken) return false;
+  await new Promise<void>((resolve) => {
+    audio.onended = () => resolve();
+  });
+  return mine === voiceToken;
 }
 
 export function stopSpeech() {
   voiceToken += 1;
-  stopVoice();
+  if (clip) {
+    clip.pause();
+    clip.src = "";
+    clip = null;
+  }
 }
 
 export async function shareCard(text: string) {

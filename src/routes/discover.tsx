@@ -82,7 +82,7 @@ function Discover() {
     setHearing(true);
     setVoiceNote("Casting the chapter");
     const text = sampleSpeech(story.id, false);
-    void speakBlocks([{ kind: "p", text }], 1, setVoiceNote).then((played) => {
+    void speakBlocks([{ kind: "p", text }], 1, setVoiceNote, story.id).then((played) => {
       setHearing(false);
       setVoiceNote(played ? "" : "Voice did not start. Tap Listen again.");
     });

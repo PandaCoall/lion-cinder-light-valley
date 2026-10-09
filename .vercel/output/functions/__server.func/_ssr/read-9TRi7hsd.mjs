@@ -1,10 +1,11 @@
 import { o as __toESM } from "../_runtime.mjs";
+import { a as codex, i as chapters, n as book, o as glossary, r as cast, t as blocks } from "./volume-8TYGjcbt.mjs";
 import { C as require_jsx_runtime, Y as require_react, b as Link, x as useNavigate } from "../_libs/@tanstack/react-router+[...].mjs";
 import { d as ChevronRight, f as ChevronLeft, i as Settings, l as Headphones, o as List, p as ArrowLeft, t as X } from "../_libs/lucide-react.mjs";
-import { C as chapters, S as cast, T as glossary, b as blocks, c as Route$5, g as recapBank, h as previews, w as codex, x as book } from "./router-ChBNvHv3.mjs";
+import { c as Route$5, g as recapBank, h as previews } from "./router-C93069zn.mjs";
 import { t as useReader } from "./reader-store-bNjKnc8J.mjs";
-import { a as pageText, c as speakBlocks, i as nearestPlate, l as stopSpeech, n as downloadEpub, o as plateCount, r as minutesToNextPlate, s as setSpeechRate, u as wordCount } from "./book-tools-CIqR8eFf.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/read-BAnvSbr5.js
+import { a as pageText, c as setSpeechRate, d as wordCount, i as nearestPlate, l as spokenFrom, n as downloadEpub, o as plateCount, r as minutesToNextPlate, s as playAudiobook, u as stopSpeech } from "./book-tools-DjGzfYIB.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/read-9TRi7hsd.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var SOLO_KINDS = /* @__PURE__ */ new Set([
@@ -244,6 +245,24 @@ function Reader({ chapter, plate, own, preview }) {
 	const pageBlocks = (view[page] ?? []).map((index) => blocks$1[index]).filter(Boolean);
 	const mateBlocks = spread ? (view[page + 1] ?? []).map((index) => blocks$1[index]).filter(Boolean) : [];
 	const pageMarked = bookmark !== null && (view[page] ?? []).includes(bookmark);
+	const bookId = preview || (own ? "" : "salt");
+	const listenFrom = mode === "scroll" ? anchor : view[page]?.[0] ?? anchor;
+	const startListen = () => {
+		if (hearing) {
+			stopSpeech();
+			setHearing(false);
+			setVoiceNote("");
+			return;
+		}
+		bumpListens();
+		setHearing(true);
+		setVoiceNote("Playing");
+		playAudiobook(bookId, spokenFrom(blocks$1, listenFrom), rate, setVoiceNote).then((played) => {
+			setHearing(false);
+			setVoiceNote(played === true ? "" : played);
+		});
+	};
+	(0, import_react.useEffect)(() => () => stopSpeech(), []);
 	(0, import_react.useEffect)(() => {
 		if (!pages.length) return;
 		const currentAnchor = useReader.getState().anchor;
@@ -414,22 +433,8 @@ function Reader({ chapter, plate, own, preview }) {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 						type: "button",
-						"aria-label": hearing ? "Stop reading aloud" : "Listen to this page",
-						onClick: () => {
-							if (hearing) {
-								stopSpeech();
-								setHearing(false);
-								setVoiceNote("");
-								return;
-							}
-							bumpListens();
-							setHearing(true);
-							setVoiceNote("Playing");
-							speakBlocks(mode === "scroll" ? blocks$1 : pageBlocks, rate, setVoiceNote).finally(() => {
-								setHearing(false);
-								setVoiceNote("");
-							});
-						},
+						"aria-label": hearing ? "Stop reading aloud" : "Listen from here",
+						onClick: startListen,
 						className: "inline-flex size-11 items-center justify-center rounded-full text-ink",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Headphones, { className: "size-5" })
 					}),
@@ -1006,16 +1011,8 @@ function Reader({ chapter, plate, own, preview }) {
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 										type: "button",
 										className: "h-12 rounded-full border border-line font-sans text-sm",
-										onClick: () => {
-											bumpListens();
-											setHearing(true);
-											setVoiceNote("Playing");
-											speakBlocks(mode === "scroll" ? blocks$1 : pageBlocks, rate, setVoiceNote).finally(() => {
-												setHearing(false);
-												setVoiceNote("");
-											});
-										},
-										children: hearing ? "Reading" : "Listen"
+										onClick: startListen,
+										children: hearing ? "Reading" : "Listen from here"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 										className: "flex gap-2",

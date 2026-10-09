@@ -1,4 +1,5 @@
 import { blocks, book, type Block } from "@/data/volume";
+import { audiobooks, type Audiobook, type AudiobookChapter } from "@/lib/audiobook-data";
 
 const PLATES = ["/plates/cover.jpg", "/plates/portrait.jpg", "/plates/keeper.jpg", "/plates/street.jpg"];
 
@@ -48,47 +49,92 @@ export function pageText(pageBlocks: Block[]): string {
 let voiceToken = 0;
 let clip: HTMLAudioElement | null = null;
 let clipTimer = 0;
+let speechRate = 1;
 
-const CLIPS: Record<string, string> = {
-  salt: "/audio/salt.mp3",
-  errand: "/audio/errand.mp3",
-  shirt: "/audio/shirt.mp3",
-};
+function findCue(chapters: AudiobookChapter[], text: string): number | null {
+  const wanted = text.replace(/\s+/g, " ").trim();
+  for (const chapter of chapters) {
+    const line = chapter.lines.find((item) => item.text.replace(/\s+/g, " ").trim() === wanted);
+    if (line) return line.at;
+  }
+  return null;
+}
+
+function place(bookAudio: Audiobook, time: number): { title: string; at: number } {
+  let title = bookAudio.chapters[0]?.title ?? "Playing";
+  let start = 0;
+  for (const chapter of bookAudio.chapters) {
+    const at = chapter.lines[0]?.at ?? 0;
+    if (time + 0.05 >= at) {
+      title = chapter.title;
+      start = at;
+    }
+  }
+  return { title, at: Math.max(0, time - start) };
+}
+
+function clock(seconds: number): string {
+  const total = Math.max(0, Math.floor(seconds));
+  const minutes = Math.floor(total / 60);
+  const remain = String(total % 60).padStart(2, "0");
+  return `${minutes}:${remain}`;
+}
+
+export function spokenFrom(source: Block[], index: number): string | undefined {
+  for (let cursor = Math.max(0, index); cursor < source.length; cursor++) {
+    const block = source[cursor];
+    if (block?.kind === "p") return block.text;
+    if (block?.kind === "chapter") return block.title;
+  }
+  return undefined;
+}
 
 export function setSpeechRate(rate: number) {
+  speechRate = rate;
   if (clip) clip.playbackRate = rate;
 }
 
-export async function speakBlocks(
-  pageBlocks: Block[],
+export async function playAudiobook(
+  bookId: string,
+  fromText?: string,
   rate = 1,
   onNote?: (note: string) => void,
-  clipId = "salt",
 ): Promise<true | string> {
   stopSpeech();
+  speechRate = rate;
   const mine = voiceToken;
-  const url = CLIPS[clipId];
-  if (!url || typeof Audio === "undefined") return "Voice is not available";
-  if (!pageText(pageBlocks).trim()) return "Nothing to read";
-  const audio = new Audio(url);
-  audio.volume = 1;
+  const recorded = audiobooks[bookId];
+  if (!recorded || typeof Audio === "undefined") return "This book isn’t recorded yet";
+  const startAt = fromText ? (findCue(recorded.chapters, fromText) ?? 0) : 0;
+  const audio = new Audio(recorded.src);
   audio.preload = "auto";
+  audio.volume = 1;
   audio.setAttribute("playsinline", "true");
-  audio.playbackRate = rate;
+  audio.playbackRate = speechRate;
   clip = audio;
-  onNote?.("Playing 0:00");
+  const seek = () => {
+    if (mine !== voiceToken) return;
+    if (startAt > 0.2 && Number.isFinite(audio.duration) && startAt < audio.duration - 0.25) {
+      audio.currentTime = startAt;
+    }
+  };
+  audio.addEventListener("loadedmetadata", seek, { once: true });
   try {
-    await audio.play();
+    const started = audio.play();
+    if (audio.readyState >= 1) seek();
+    await started;
   } catch (error) {
     return error instanceof Error ? error.message : "Voice did not start";
   }
   if (mine !== voiceToken) return "Stopped";
+  const note = () => {
+    const here = place(recorded, audio.currentTime || startAt);
+    onNote?.(`${here.title} · ${clock(here.at)}`);
+  };
+  note();
   const timer = window.setInterval(() => {
     if (mine !== voiceToken) return;
-    const total = Math.floor(audio.currentTime);
-    const minutes = Math.floor(total / 60);
-    const seconds = String(total % 60).padStart(2, "0");
-    onNote?.(`Playing ${minutes}:${seconds}`);
+    note();
   }, 250);
   clipTimer = timer;
   await new Promise<void>((resolve) => {
@@ -97,6 +143,15 @@ export async function speakBlocks(
   });
   window.clearInterval(timer);
   return mine === voiceToken ? true : "Stopped";
+}
+
+export async function speakBlocks(
+  pageBlocks: Block[],
+  rate = 1,
+  onNote?: (note: string) => void,
+  bookId = "salt",
+): Promise<true | string> {
+  return playAudiobook(bookId, spokenFrom(pageBlocks, 0), rate, onNote);
 }
 
 export function stopSpeech() {

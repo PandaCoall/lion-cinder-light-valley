@@ -1,8 +1,8 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AppNav } from "@/components/nav";
-import { filterStories, genres, sampleSpeech, stories, tropes } from "@/data/catalog";
-import { speakBlocks, stopSpeech } from "@/lib/book-tools";
+import { filterStories, genres, stories, tropes } from "@/data/catalog";
+import { playAudiobook, stopSpeech } from "@/lib/book-tools";
 import { useOpenBook } from "@/lib/open-book";
 import { useReader } from "@/lib/reader-store";
 
@@ -44,6 +44,8 @@ function Discover() {
   useEffect(() => {
     stopSpeech();
     setHearing(false);
+    setVoiceNote("");
+    return () => stopSpeech();
   }, [story?.id]);
 
   const show = (id: string) => {
@@ -81,8 +83,7 @@ function Discover() {
     }
     setHearing(true);
     setVoiceNote("Playing");
-    const text = sampleSpeech(story.id, false);
-    void speakBlocks([{ kind: "p", text }], 1, setVoiceNote, story.id).then((played) => {
+    void playAudiobook(story.id, undefined, 1, setVoiceNote).then((played) => {
       setHearing(false);
       setVoiceNote(played === true ? "" : played);
     });

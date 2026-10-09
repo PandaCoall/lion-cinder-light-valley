@@ -1,8 +1,8 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { C as require_jsx_runtime, S as useRouter, Y as require_react, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { l as Route$7 } from "./router-ChBNvHv3.mjs";
-import { n as signInWithGoogle, t as authClient } from "./client-DihROstF.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/login-CMxrXWoL.js
+import { l as Route$7 } from "./router-C93069zn.mjs";
+import { n as signInWithGoogle, t as authClient } from "./client-7RJ8D7Ec.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/login-Cl6ZfGa1.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function Login() {

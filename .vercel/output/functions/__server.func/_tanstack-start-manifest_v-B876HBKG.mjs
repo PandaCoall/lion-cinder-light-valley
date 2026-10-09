@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-CwkpNtQb.js
+//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-B876HBKG.js
 var tsrStartManifest = () => ({ routes: {
 	__root__: {
 		filePath: "/workspace/src/routes/__root.tsx",
@@ -16,25 +16,25 @@ var tsrStartManifest = () => ({ routes: {
 			"/api/auth/$"
 		],
 		preloads: [
-			"/assets/index-kmru3IbI.js",
+			"/assets/index-BoScjMPV.js",
 			"/assets/rolldown-runtime-C0FnF6B9.js",
 			"/assets/link-Cm7AQc0E.js",
 			"/assets/lazyRouteComponent-CLTsIiGc.js",
 			"/assets/preload-helper-Czpn1I53.js",
-			"/assets/catalog-C5Gqb4uw.js"
+			"/assets/catalog-95rKGdjo.js"
 		],
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/assets/index-kmru3IbI.js"
+			src: "/assets/index-BoScjMPV.js"
 		} }]
 	},
 	"/": {
 		filePath: "/workspace/src/routes/index.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/routes-DhSmDIyB.js",
-			"/assets/nav-C2xZW5LU.js",
+			"/assets/routes-CJndJLBC.js",
+			"/assets/nav-BVQASB4w.js",
 			"/assets/volume-DcJVEiFl.js",
 			"/assets/open-book-BFQ_fbac.js",
 			"/assets/reader-store-DD9tH773.js"
@@ -44,19 +44,19 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "/workspace/src/routes/discover.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/discover-CQNmkDvn.js",
-			"/assets/nav-C2xZW5LU.js",
+			"/assets/discover-D_W3BCRM.js",
+			"/assets/nav-BVQASB4w.js",
 			"/assets/open-book-BFQ_fbac.js",
 			"/assets/reader-store-DD9tH773.js",
-			"/assets/book-tools-HZUcYV10.js"
+			"/assets/book-tools-Ct-ERrLp.js"
 		]
 	},
 	"/editor": {
 		filePath: "/workspace/src/routes/editor.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/editor-B_UkN8ct.js",
-			"/assets/nav-C2xZW5LU.js",
+			"/assets/editor-DcVRZW-Z.js",
+			"/assets/nav-BVQASB4w.js",
 			"/assets/reader-store-DD9tH773.js",
 			"/assets/manuscript-DLRVSntD.js"
 		]
@@ -64,36 +64,36 @@ var tsrStartManifest = () => ({ routes: {
 	"/login": {
 		filePath: "/workspace/src/routes/login.tsx",
 		children: void 0,
-		preloads: ["/assets/login-C_CdDanT.js", "/assets/client-Bagaivtw.js"]
+		preloads: ["/assets/login-sYNiV20D.js", "/assets/client-Bagaivtw.js"]
 	},
 	"/profile": {
 		filePath: "/workspace/src/routes/profile.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/profile-DB6OKiyv.js",
-			"/assets/nav-C2xZW5LU.js",
+			"/assets/profile-dom_Iko9.js",
+			"/assets/nav-BVQASB4w.js",
 			"/assets/client-Bagaivtw.js",
 			"/assets/open-book-BFQ_fbac.js",
 			"/assets/reader-store-DD9tH773.js",
-			"/assets/book-tools-HZUcYV10.js"
+			"/assets/book-tools-Ct-ERrLp.js"
 		]
 	},
 	"/read": {
 		filePath: "/workspace/src/routes/read.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/read-BE1il_3W.js",
+			"/assets/read-BO5OmoIJ.js",
 			"/assets/volume-DcJVEiFl.js",
 			"/assets/reader-store-DD9tH773.js",
-			"/assets/book-tools-HZUcYV10.js"
+			"/assets/book-tools-Ct-ERrLp.js"
 		]
 	},
 	"/shelf": {
 		filePath: "/workspace/src/routes/shelf.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/shelf-DZCnTfSj.js",
-			"/assets/nav-C2xZW5LU.js",
+			"/assets/shelf-DZBDiNDZ.js",
+			"/assets/nav-BVQASB4w.js",
 			"/assets/open-book-BFQ_fbac.js",
 			"/assets/reader-store-DD9tH773.js"
 		]
@@ -102,8 +102,8 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "/workspace/src/routes/studio.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/studio-BXX6zmfG.js",
-			"/assets/nav-C2xZW5LU.js",
+			"/assets/studio-DfxMymJK.js",
+			"/assets/nav-BVQASB4w.js",
 			"/assets/reader-store-DD9tH773.js",
 			"/assets/manuscript-DLRVSntD.js"
 		]
@@ -112,8 +112,8 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "/workspace/src/routes/write.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/write-B77DwyyG.js",
-			"/assets/nav-C2xZW5LU.js",
+			"/assets/write-hkM7JSsQ.js",
+			"/assets/nav-BVQASB4w.js",
 			"/assets/reader-store-DD9tH773.js"
 		]
 	},
@@ -121,8 +121,8 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "/workspace/src/routes/book.$bookId.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/book._bookId-9YRCidaC.js",
-			"/assets/nav-C2xZW5LU.js",
+			"/assets/book._bookId-CEQxRwp9.js",
+			"/assets/nav-BVQASB4w.js",
 			"/assets/volume-DcJVEiFl.js",
 			"/assets/open-book-BFQ_fbac.js",
 			"/assets/reader-store-DD9tH773.js"

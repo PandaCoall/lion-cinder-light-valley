@@ -1,11 +1,11 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { C as require_jsx_runtime, Y as require_react, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { _ as sampleSpeech, d as Route$9, f as filterStories, m as genres, y as tropes } from "./router-ChBNvHv3.mjs";
+import { d as Route$9, f as filterStories, m as genres, v as tropes } from "./router-C93069zn.mjs";
 import { t as AppNav } from "./nav-CzuovPGK.mjs";
 import { t as useReader } from "./reader-store-bNjKnc8J.mjs";
-import { n as useOpenBook } from "./open-book-B5QDBiHA.mjs";
-import { c as speakBlocks, l as stopSpeech } from "./book-tools-CIqR8eFf.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/discover-B2lODelS.js
+import { n as useOpenBook } from "./open-book-DRgAtO2Z.mjs";
+import { s as playAudiobook, u as stopSpeech } from "./book-tools-DjGzfYIB.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/discover-D1qYtM49.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function Discover() {
@@ -45,6 +45,8 @@ function Discover() {
 	(0, import_react.useEffect)(() => {
 		stopSpeech();
 		setHearing(false);
+		setVoiceNote("");
+		return () => stopSpeech();
 	}, [story?.id]);
 	const advance = () => setIndex((value) => value + 1);
 	const skip = () => {
@@ -79,11 +81,7 @@ function Discover() {
 		}
 		setHearing(true);
 		setVoiceNote("Playing");
-		const text = sampleSpeech(story.id, false);
-		speakBlocks([{
-			kind: "p",
-			text
-		}], 1, setVoiceNote, story.id).then((played) => {
+		playAudiobook(story.id, void 0, 1, setVoiceNote).then((played) => {
 			setHearing(false);
 			setVoiceNote(played === true ? "" : played);
 		});

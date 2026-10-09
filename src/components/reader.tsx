@@ -3,7 +3,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, Headphones, List, Settings, X } f
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { blocks as printed, book, cast, chapters, codex, glossary, type Block } from "@/data/volume";
 import { previews, recapBank } from "@/data/catalog";
-import { downloadEpub, minutesToNextPlate, nearestPlate, pageText, plateCount, setSpeechRate, speakBlocks, stopSpeech, wordCount } from "@/lib/book-tools";
+import { downloadEpub, minutesToNextPlate, nearestPlate, pageText, plateCount, playAudiobook, setSpeechRate, spokenFrom, stopSpeech, wordCount } from "@/lib/book-tools";
 import { SOLO_KINDS, packPages, pageForAnchor } from "@/lib/paginate";
 import { useReader, type FaceName, type ReadMode, type ThemeName, type TypeSize } from "@/lib/reader-store";
 
@@ -191,6 +191,26 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
   const pageBlocks = (view[page] ?? []).map((index) => blocks[index]).filter(Boolean);
   const mateBlocks = spread ? (view[page + 1] ?? []).map((index) => blocks[index]).filter(Boolean) : [];
   const pageMarked = bookmark !== null && (view[page] ?? []).includes(bookmark);
+  const bookId = preview || (own ? "" : "salt");
+  const listenFrom = mode === "scroll" ? anchor : (view[page]?.[0] ?? anchor);
+
+  const startListen = () => {
+    if (hearing) {
+      stopSpeech();
+      setHearing(false);
+      setVoiceNote("");
+      return;
+    }
+    bumpListens();
+    setHearing(true);
+    setVoiceNote("Playing");
+    void playAudiobook(bookId, spokenFrom(blocks, listenFrom), rate, setVoiceNote).then((played) => {
+      setHearing(false);
+      setVoiceNote(played === true ? "" : played);
+    });
+  };
+
+  useEffect(() => () => stopSpeech(), []);
 
   useEffect(() => {
     if (!pages.length) return;
@@ -374,22 +394,8 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
         </button>
         <button
           type="button"
-          aria-label={hearing ? "Stop reading aloud" : "Listen to this page"}
-          onClick={() => {
-            if (hearing) {
-              stopSpeech();
-              setHearing(false);
-              setVoiceNote("");
-              return;
-            }
-            bumpListens();
-            setHearing(true);
-            setVoiceNote("Playing");
-            void speakBlocks(mode === "scroll" ? blocks : pageBlocks, rate, setVoiceNote).finally(() => {
-              setHearing(false);
-              setVoiceNote("");
-            });
-          }}
+          aria-label={hearing ? "Stop reading aloud" : "Listen from here"}
+          onClick={startListen}
           className="inline-flex size-11 items-center justify-center rounded-full text-ink"
         >
           <Headphones className="size-5" />
@@ -752,8 +758,8 @@ export function Reader({ chapter, plate, own, preview }: { chapter?: string; pla
                   </div>
                 </fieldset>
                 <div className="grid gap-2">
-                  <button type="button" className="h-12 rounded-full border border-line font-sans text-sm" onClick={() => { bumpListens(); setHearing(true); setVoiceNote("Playing"); void speakBlocks(mode === "scroll" ? blocks : pageBlocks, rate, setVoiceNote).finally(() => { setHearing(false); setVoiceNote(""); }); }}>
-                    {hearing ? "Reading" : "Listen"}
+                  <button type="button" className="h-12 rounded-full border border-line font-sans text-sm" onClick={startListen}>
+                    {hearing ? "Reading" : "Listen from here"}
                   </button>
                   <div className="flex gap-2">
                     {[0.9, 1, 1.25, 1.5].map((speed) => (

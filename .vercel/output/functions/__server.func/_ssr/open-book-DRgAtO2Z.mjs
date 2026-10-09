@@ -1,7 +1,7 @@
 import { x as useNavigate } from "../_libs/@tanstack/react-router+[...].mjs";
-import { t as authClient } from "./client-DihROstF.mjs";
+import { t as authClient } from "./client-7RJ8D7Ec.mjs";
 import { t as useReader } from "./reader-store-bNjKnc8J.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/open-book-B5QDBiHA.js
+//#region node_modules/.nitro/vite/services/ssr/assets/open-book-DRgAtO2Z.js
 /**
 * Current user + loading state. Same behavior in live preview and when deployed:
 *   - Auth enabled -> the real signed-in user; `user` is `null` while

@@ -128,8 +128,8 @@ function Studio() {
                       importChapters(novel.id, titled);
                       setNotice(
                         titled.length > 1
-                          ? `Imported ${titled.length} chapters from ${file.name}.`
-                          : `Imported ${file.name} as one chapter.`,
+                          ? `Imported ${titled.length} chapters from ${file.name}. Page numbers from the file often come in with the text. Open each chapter, take them out, recheck, edit, then publish.`
+                          : `Imported ${file.name} as one chapter. Page numbers from the file often come in with the text. Open the chapter, take them out, recheck, edit, then publish.`,
                       );
                     })
                     .catch((error: unknown) => {
@@ -137,7 +137,7 @@ function Studio() {
                     });
                 }}
               />
-              <p className="mt-2 font-sans text-sm text-muted">Word (.doc, .docx) and PDF. A line that starts with “Chapter” starts a new chapter.</p>
+              <p className="mt-2 font-sans text-sm text-muted">Word (.doc, .docx) and PDF. A line that starts with “Chapter” starts a new chapter. After an upload, check that page numbers did not come in with the document. Recheck, edit, then publish.</p>
               {notice ? <p className="mt-2 font-sans text-sm text-muted">{notice}</p> : null}
               <ul className="mt-3 flex flex-col gap-2">
                 {novel.chapters.map((chapter, index) => (

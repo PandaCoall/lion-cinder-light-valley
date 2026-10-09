@@ -78,7 +78,7 @@ function Editor() {
                       if (!chapter.title || chapter.title.startsWith("Chapter")) {
                         patchChapter(novel.id, chapter.id, { title: file.name.replace(/\.[^.]+$/, "") });
                       }
-                      setNotice(`Imported ${file.name}.`);
+                      setNotice(`Imported ${file.name}. Check that page numbers did not come in with the document. Take them out, recheck, edit, then publish.`);
                     })
                     .catch((error: unknown) => {
                       setNotice(error instanceof Error ? error.message : "That file could not be read.");
@@ -87,6 +87,7 @@ function Editor() {
               />
             </div>
             {notice ? <p className="mt-2 font-sans text-sm text-muted">{notice}</p> : null}
+            <p className="mt-2 font-sans text-sm text-muted">If this chapter came from a Word file or PDF, page numbers from that file often land in the text. Take them out, recheck, edit, then publish.</p>
             <textarea
               value={chapter.body}
               aria-label="Chapter"

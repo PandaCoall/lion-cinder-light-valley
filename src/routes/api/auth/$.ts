@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { auth } from "@/lib/auth/server";
+import { auth, ensureAuthSchema } from "@/lib/auth/server";
 
 async function handle(request: Request) {
   try {
+    await ensureAuthSchema();
     const response = await auth.handler(request);
     if (response.status < 500) return response;
     const text = await response.text();
@@ -11,7 +12,8 @@ async function handle(request: Request) {
     }
     return Response.json({ message: "Sign-in failed. Please try again." }, { status: response.status });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Sign-in failed. Please try again.";
+    const raw = error instanceof Error ? error.message : "Sign-in failed. Please try again.";
+    const message = raw.replace(/postgres(?:ql)?:\/\/\S+/gi, "database");
     return Response.json({ message }, { status: 500 });
   }
 }

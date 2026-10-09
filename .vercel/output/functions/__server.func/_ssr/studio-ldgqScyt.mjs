@@ -1,10 +1,10 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { C as require_jsx_runtime, Y as require_react, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { m as genres, s as Route$3, y as tropes } from "./router-3JDcA_7e.mjs";
+import { m as genres, s as Route$3, y as tropes } from "./router-Cuu7FmG5.mjs";
 import { t as AppNav } from "./nav-CzuovPGK.mjs";
 import { t as useReader } from "./reader-store-bNjKnc8J.mjs";
 import { n as splitChapters, t as readManuscript } from "./manuscript-Bn5xcb8X.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/studio-DEykTaMh.js
+//#region node_modules/.nitro/vite/services/ssr/assets/studio-ldgqScyt.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function Studio() {

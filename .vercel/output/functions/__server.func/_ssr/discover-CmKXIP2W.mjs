@@ -1,11 +1,11 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { C as require_jsx_runtime, Y as require_react, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { _ as sampleSpeech, d as Route$9, f as filterStories, m as genres, y as tropes } from "./router-3JDcA_7e.mjs";
+import { _ as sampleSpeech, d as Route$9, f as filterStories, m as genres, y as tropes } from "./router-Cuu7FmG5.mjs";
 import { t as AppNav } from "./nav-CzuovPGK.mjs";
 import { t as useReader } from "./reader-store-bNjKnc8J.mjs";
-import { n as useOpenBook } from "./open-book-B1y_6QcR.mjs";
+import { n as useOpenBook } from "./open-book-BSFaXFEE.mjs";
 import { c as speakBlocks, l as stopSpeech } from "./book-tools-CIqR8eFf.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/discover-k9FKTp4Z.js
+//#region node_modules/.nitro/vite/services/ssr/assets/discover-CmKXIP2W.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function Discover() {

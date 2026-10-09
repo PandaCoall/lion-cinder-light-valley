@@ -131,6 +131,69 @@ const googleClientSecret = env("GOOGLE_CLIENT_SECRET");
 const pool = databaseUrl ? new Pool({ connectionString: databaseUrl }) : null;
 pool?.on("error", () => {});
 
+// The published build does not always get to run migrations, and Google’s
+// return trip needs these tables. Safe to repeat.
+const AUTH_SCHEMA_SQL = `
+create table if not exists "user" (
+  "id" text not null primary key,
+  "name" text not null,
+  "email" text not null unique,
+  "emailVerified" boolean not null,
+  "image" text,
+  "createdAt" timestamptz default CURRENT_TIMESTAMP not null,
+  "updatedAt" timestamptz default CURRENT_TIMESTAMP not null
+);
+create table if not exists "session" (
+  "id" text not null primary key,
+  "expiresAt" timestamptz not null,
+  "token" text not null unique,
+  "createdAt" timestamptz default CURRENT_TIMESTAMP not null,
+  "updatedAt" timestamptz not null,
+  "ipAddress" text,
+  "userAgent" text,
+  "userId" text not null references "user" ("id") on delete cascade
+);
+create table if not exists "account" (
+  "id" text not null primary key,
+  "accountId" text not null,
+  "providerId" text not null,
+  "userId" text not null references "user" ("id") on delete cascade,
+  "accessToken" text,
+  "refreshToken" text,
+  "idToken" text,
+  "accessTokenExpiresAt" timestamptz,
+  "refreshTokenExpiresAt" timestamptz,
+  "scope" text,
+  "password" text,
+  "createdAt" timestamptz default CURRENT_TIMESTAMP not null,
+  "updatedAt" timestamptz not null
+);
+create table if not exists "verification" (
+  "id" text not null primary key,
+  "identifier" text not null,
+  "value" text not null,
+  "expiresAt" timestamptz not null,
+  "createdAt" timestamptz default CURRENT_TIMESTAMP not null,
+  "updatedAt" timestamptz default CURRENT_TIMESTAMP not null
+);
+create index if not exists "session_userId_idx" on "session" ("userId");
+create index if not exists "account_userId_idx" on "account" ("userId");
+create index if not exists "verification_identifier_idx" on "verification" ("identifier");
+`;
+
+let schemaReady: Promise<void> | null = null;
+export function ensureAuthSchema(): Promise<void> {
+  if (!pool) return Promise.resolve();
+  schemaReady ??= pool
+    .query(AUTH_SCHEMA_SQL)
+    .then(() => undefined)
+    .catch((error: unknown) => {
+      schemaReady = null;
+      throw error;
+    });
+  return schemaReady;
+}
+
 // Static broker OAuth endpoints (skip OIDC discovery on every sign-in / callback).
 // Discovery would cost an extra network hop to the broker before the popup can
 // even redirect to Google/X — the live-preview popup felt stuck on the app for
@@ -182,6 +245,7 @@ export const auth = betterAuth({
   // globalThis so HMR doesn't invalidate PGLite-backed sessions (see above).
   secret: env("BETTER_AUTH_SECRET") ?? previewAuthSecret(),
   database,
+  onAPIError: { throw: true },
 
   // CSRF / origin check for credentialed auth POSTs (email sign-up/sign-in, …).
   // See `trustedOrigins` construction above — must cover live preview hosts AND

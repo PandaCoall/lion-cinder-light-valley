@@ -47,6 +47,7 @@ export function pageText(pageBlocks: Block[]): string {
 
 let voiceToken = 0;
 let clip: HTMLAudioElement | null = null;
+let clipTimer = 0;
 
 const CLIPS: Record<string, string> = {
   salt: "/audio/salt.mp3",
@@ -63,33 +64,44 @@ export async function speakBlocks(
   rate = 1,
   onNote?: (note: string) => void,
   clipId = "salt",
-): Promise<boolean> {
+): Promise<true | string> {
   stopSpeech();
   const mine = voiceToken;
   const url = CLIPS[clipId];
-  if (!url || typeof Audio === "undefined") return false;
-  if (!pageText(pageBlocks).trim()) return false;
-  onNote?.("Playing");
+  if (!url || typeof Audio === "undefined") return "Voice is not available";
+  if (!pageText(pageBlocks).trim()) return "Nothing to read";
   const audio = new Audio(url);
   audio.volume = 1;
   audio.preload = "auto";
   audio.playsInline = true;
   audio.playbackRate = rate;
   clip = audio;
+  onNote?.("Playing 0:00");
   try {
     await audio.play();
-  } catch {
-    return false;
+  } catch (error) {
+    return error instanceof Error ? error.message : "Voice did not start";
   }
-  if (mine !== voiceToken) return false;
+  if (mine !== voiceToken) return "Stopped";
+  const timer = window.setInterval(() => {
+    if (mine !== voiceToken) return;
+    const total = Math.floor(audio.currentTime);
+    const minutes = Math.floor(total / 60);
+    const seconds = String(total % 60).padStart(2, "0");
+    onNote?.(`Playing ${minutes}:${seconds}`);
+  }, 250);
+  clipTimer = timer;
   await new Promise<void>((resolve) => {
     audio.onended = () => resolve();
+    audio.onerror = () => resolve();
   });
-  return mine === voiceToken;
+  window.clearInterval(timer);
+  return mine === voiceToken ? true : "Stopped";
 }
 
 export function stopSpeech() {
   voiceToken += 1;
+  window.clearInterval(clipTimer);
   if (clip) {
     clip.pause();
     clip.src = "";

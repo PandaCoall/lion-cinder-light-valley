@@ -1,11 +1,11 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { C as require_jsx_runtime, Y as require_react, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { _ as sampleSpeech, d as Route$9, f as filterStories, m as genres, y as tropes } from "./router-BdPLw30A.mjs";
+import { _ as sampleSpeech, d as Route$9, f as filterStories, m as genres, y as tropes } from "./router-ZXeNBRJ1.mjs";
 import { t as AppNav } from "./nav-CzuovPGK.mjs";
 import { t as useReader } from "./reader-store-CB2CzwHY.mjs";
-import { n as useOpenBook } from "./open-book-duYo-G_l.mjs";
-import { c as speakBlocks, l as stopSpeech } from "./book-tools-DwUNXMLj.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/discover-BVOcEXV1.js
+import { n as useOpenBook } from "./open-book-CnmBMeNs.mjs";
+import { c as speakBlocks, l as stopSpeech } from "./book-tools-BTRRdQ3Y.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/discover-DZIzyxNd.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function Discover() {
@@ -85,7 +85,7 @@ function Discover() {
 			text
 		}], 1, setVoiceNote, story.id).then((played) => {
 			setHearing(false);
-			setVoiceNote(played ? "" : "Voice did not start. Tap Listen again.");
+			setVoiceNote(played === true ? "" : played);
 		});
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {

@@ -5,11 +5,13 @@ async function handle(request: Request) {
   try {
     const response = await auth.handler(request);
     if (response.status < 500) return response;
-    const text = await response.clone().text();
-    if (text.trim()) return response;
-    return Response.json({ message: "Sign-in failed with an empty error.", status: response.status }, { status: response.status });
+    const text = await response.text();
+    if (text.trim()) {
+      return new Response(text, { status: response.status, headers: response.headers });
+    }
+    return Response.json({ message: "Sign-in failed. Please try again." }, { status: response.status });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Sign-in failed";
+    const message = error instanceof Error ? error.message : "Sign-in failed. Please try again.";
     return Response.json({ message }, { status: 500 });
   }
 }

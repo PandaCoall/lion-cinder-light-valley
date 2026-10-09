@@ -1,10 +1,10 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { C as require_jsx_runtime, Y as require_react, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { m as genres, s as Route$3, y as tropes } from "./router-CNRKipda.mjs";
+import { m as genres, s as Route$3, y as tropes } from "./router-3JDcA_7e.mjs";
 import { t as AppNav } from "./nav-CzuovPGK.mjs";
 import { t as useReader } from "./reader-store-bNjKnc8J.mjs";
 import { n as splitChapters, t as readManuscript } from "./manuscript-Bn5xcb8X.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/studio-CSq2mQ7t.js
+//#region node_modules/.nitro/vite/services/ssr/assets/studio-DEykTaMh.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function Studio() {
@@ -138,7 +138,7 @@ function Studio() {
 											body: chapter.body
 										}));
 										importChapters(novel.id, titled);
-										setNotice(titled.length > 1 ? `Imported ${titled.length} chapters from ${file.name}.` : `Imported ${file.name} as one chapter.`);
+										setNotice(titled.length > 1 ? `Imported ${titled.length} chapters from ${file.name}. Page numbers from the file often come in with the text. Open each chapter, take them out, recheck, edit, then publish.` : `Imported ${file.name} as one chapter. Page numbers from the file often come in with the text. Open the chapter, take them out, recheck, edit, then publish.`);
 									}).catch((error) => {
 										setNotice(error instanceof Error ? error.message : "That file could not be read.");
 									});
@@ -146,7 +146,7 @@ function Studio() {
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 								className: "mt-2 font-sans text-sm text-muted",
-								children: "Word (.doc, .docx) and PDF. A line that starts with “Chapter” starts a new chapter."
+								children: "Word (.doc, .docx) and PDF. A line that starts with “Chapter” starts a new chapter. After an upload, check that page numbers did not come in with the document. Recheck, edit, then publish."
 							}),
 							notice ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 								className: "mt-2 font-sans text-sm text-muted",

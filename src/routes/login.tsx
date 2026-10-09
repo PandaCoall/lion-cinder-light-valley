@@ -111,7 +111,7 @@ function Login() {
             </form>
             <button
               type="button"
-              className="mt-4 font-sans text-sm text-muted"
+              className="mt-4 block font-sans text-sm text-muted"
               onClick={() => {
                 setMode(mode === "up" ? "in" : "up");
                 setError("");
@@ -123,7 +123,7 @@ function Login() {
         ) : (
           <p className="mt-6 font-sans text-sm text-muted">Sign-in is turned off.</p>
         )}
-        <Link to="/" className="mt-6 inline-flex h-11 items-center font-sans text-sm text-muted">Back home</Link>
+        <Link to="/" className="mt-6 block font-sans text-sm text-muted">Back home</Link>
       </div>
     </main>
   );

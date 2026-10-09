@@ -1,10 +1,10 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { C as require_jsx_runtime, Y as require_react, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { u as Route$8 } from "./router-CNRKipda.mjs";
+import { u as Route$8 } from "./router-3JDcA_7e.mjs";
 import { t as AppNav } from "./nav-CzuovPGK.mjs";
 import { t as useReader } from "./reader-store-bNjKnc8J.mjs";
 import { t as readManuscript } from "./manuscript-Bn5xcb8X.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/editor-CagXCCEX.js
+//#region node_modules/.nitro/vite/services/ssr/assets/editor-CTI3ifKx.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function Editor() {
@@ -80,7 +80,7 @@ function Editor() {
 									readManuscript(file).then((text) => {
 										writeBody(text);
 										if (!chapter.title || chapter.title.startsWith("Chapter")) patchChapter(novel.id, chapter.id, { title: file.name.replace(/\.[^.]+$/, "") });
-										setNotice(`Imported ${file.name}.`);
+										setNotice(`Imported ${file.name}. Check that page numbers did not come in with the document. Take them out, recheck, edit, then publish.`);
 									}).catch((error) => {
 										setNotice(error instanceof Error ? error.message : "That file could not be read.");
 									});
@@ -92,6 +92,10 @@ function Editor() {
 						className: "mt-2 font-sans text-sm text-muted",
 						children: notice
 					}) : null,
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "mt-2 font-sans text-sm text-muted",
+						children: "If this chapter came from a Word file or PDF, page numbers from that file often land in the text. Take them out, recheck, edit, then publish."
+					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", {
 						value: chapter.body,
 						"aria-label": "Chapter",

@@ -126,6 +126,11 @@ const databaseUrl = env("DATABASE_URL");
 const googleClientId = env("GOOGLE_CLIENT_ID");
 const googleClientSecret = env("GOOGLE_CLIENT_SECRET");
 
+// An idle Postgres client emits `error`. Without a listener, Node kills the
+// function and Google sign-in comes back as an empty 500.
+const pool = databaseUrl ? new Pool({ connectionString: databaseUrl }) : null;
+pool?.on("error", () => {});
+
 // Static broker OAuth endpoints (skip OIDC discovery on every sign-in / callback).
 // Discovery would cost an extra network hop to the broker before the popup can
 // even redirect to Google/X — the live-preview popup felt stuck on the app for
@@ -140,8 +145,8 @@ const grokUserInfoUrl = `${issuerBase}/api/auth/oauth2/userinfo`;
 // SAME DB as app data, including email/password users. Both use the Better Auth
 // schema from `migrations/auth/0001_auth.sql`, copied into `migrations/` when
 // the app turns sign-in on.
-const database = databaseUrl
-  ? new Pool({ connectionString: databaseUrl })
+const database = pool
+  ? pool
   : { dialect: pgliteDialect(() => getPglite()), type: "postgres" as const };
 
 /** Session token cookie name — also read by the live-preview popup completion page. */
@@ -182,10 +187,12 @@ export const auth = betterAuth({
   // See `trustedOrigins` construction above — must cover live preview hosts AND
   // local loopback variants, or clients get "Invalid origin".
   trustedOrigins,
+  // The default sign-in limit is 3 tries per 10 seconds. On the live site that
+  // bucket was shared, so Continue with Google died as "Too many requests".
   rateLimit: {
     customRules: {
-      "/sign-in/*": { window: 60, max: 30 },
-      "/sign-up/*": { window: 60, max: 15 },
+      "/sign-in/*": false,
+      "/sign-up/*": false,
     },
   },
 

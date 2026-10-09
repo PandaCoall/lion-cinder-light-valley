@@ -1,8 +1,8 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { C as require_jsx_runtime, S as useRouter, Y as require_react, b as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { l as Route$7 } from "./router-CNRKipda.mjs";
-import { n as signInWithGoogle, t as authClient } from "./client-CNzh1QMj.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/login-DGhHuNLq.js
+import { l as Route$7 } from "./router-3JDcA_7e.mjs";
+import { n as signInWithGoogle, t as authClient } from "./client-CM3mXCpx.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/login-CFySmAH4.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function Login() {
@@ -118,7 +118,7 @@ function Login() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 						type: "button",
-						className: "mt-4 font-sans text-sm text-muted",
+						className: "mt-4 block font-sans text-sm text-muted",
 						onClick: () => {
 							setMode(mode === "up" ? "in" : "up");
 							setError("");
@@ -128,7 +128,7 @@ function Login() {
 				] }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
 					to: "/",
-					className: "mt-6 inline-flex h-11 items-center font-sans text-sm text-muted",
+					className: "mt-6 block font-sans text-sm text-muted",
 					children: "Back home"
 				})
 			]

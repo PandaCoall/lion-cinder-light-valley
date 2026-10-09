@@ -626,7 +626,7 @@ var recapBank = [
 	}
 ];
 //#endregion
-//#region node_modules/.nitro/vite/services/ssr/assets/router-CNRKipda.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-3JDcA_7e.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var FALLBACK_MESSAGE = "An unexpected error occurred. Try reloading the page.";
@@ -988,15 +988,15 @@ var Route$11 = createRootRoute({
 		] })]
 	})
 });
-var $$splitComponentImporter$9 = () => import("./routes-dpM3EMbs.mjs");
+var $$splitComponentImporter$9 = () => import("./routes-CrRP27Zl.mjs");
 var Route$10 = createFileRoute("/")({ component: lazyRouteComponent($$splitComponentImporter$9, "component") });
-var $$splitComponentImporter$8 = () => import("./discover-wNGCEqH6.mjs");
+var $$splitComponentImporter$8 = () => import("./discover-k9FKTp4Z.mjs");
 var Route$9 = createFileRoute("/discover")({
 	validateSearch: (search) => ({ q: typeof search.q === "string" ? search.q : void 0 }),
 	head: () => ({ meta: [{ title: "Discover · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$8, "component")
 });
-var $$splitComponentImporter$7 = () => import("./editor-CagXCCEX.mjs");
+var $$splitComponentImporter$7 = () => import("./editor-CTI3ifKx.mjs");
 var Route$8 = createFileRoute("/editor")({
 	validateSearch: (search) => ({
 		novel: typeof search.novel === "string" ? search.novel : void 0,
@@ -1005,18 +1005,18 @@ var Route$8 = createFileRoute("/editor")({
 	head: () => ({ meta: [{ title: "Chapter · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$7, "component")
 });
-var $$splitComponentImporter$6 = () => import("./login-DGhHuNLq.mjs");
+var $$splitComponentImporter$6 = () => import("./login-CFySmAH4.mjs");
 var Route$7 = createFileRoute("/login")({
 	validateSearch: (search) => ({ next: typeof search.next === "string" ? search.next : void 0 }),
 	head: () => ({ meta: [{ title: "Sign in · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$6, "component")
 });
-var $$splitComponentImporter$5 = () => import("./profile-Nj0z9ooF.mjs");
+var $$splitComponentImporter$5 = () => import("./profile-BAdhsfyL.mjs");
 var Route$6 = createFileRoute("/profile")({
 	head: () => ({ meta: [{ title: "Profile · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$5, "component")
 });
-var $$splitComponentImporter$4 = () => import("./read-DWuJeae3.mjs");
+var $$splitComponentImporter$4 = () => import("./read-Cdyyw6dp.mjs");
 var Route$5 = createFileRoute("/read")({
 	validateSearch: (search) => ({
 		chapter: typeof search.chapter === "string" ? search.chapter : void 0,
@@ -1027,12 +1027,12 @@ var Route$5 = createFileRoute("/read")({
 	head: () => ({ meta: [{ title: "Salt & Second Chances · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$4, "component")
 });
-var $$splitComponentImporter$3 = () => import("./shelf-CCabMx-Z.mjs");
+var $$splitComponentImporter$3 = () => import("./shelf-DMzjp0vh.mjs");
 var Route$4 = createFileRoute("/shelf")({
 	head: () => ({ meta: [{ title: "Shelf · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-var $$splitComponentImporter$2 = () => import("./studio-CSq2mQ7t.mjs");
+var $$splitComponentImporter$2 = () => import("./studio-DEykTaMh.mjs");
 var Route$3 = createFileRoute("/studio")({
 	validateSearch: (search) => ({ novel: typeof search.novel === "string" ? search.novel : void 0 }),
 	head: () => ({ meta: [{ title: "Studio · LightNov" }] }),
@@ -1043,7 +1043,7 @@ var Route$2 = createFileRoute("/write")({
 	head: () => ({ meta: [{ title: "Write · LightNov" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-var $$splitComponentImporter = () => import("./book._bookId-BP5F296G.mjs");
+var $$splitComponentImporter = () => import("./book._bookId-DauzTclh.mjs");
 var Route$1 = createFileRoute("/book/$bookId")({
 	head: ({ params }) => ({ meta: [{ title: `${findStory(params.bookId)?.title ?? "Book"} · LightNov` }] }),
 	component: lazyRouteComponent($$splitComponentImporter, "component")
@@ -10467,29 +10467,36 @@ var LOCAL_DEV_ORIGINS = [
 	"http://127.0.0.1:8080",
 	"http://[::1]:8080"
 ];
-var baseURL = explicitBaseURL ?? {
+var PRODUCTION_HOSTS = ["lightnov.com", "www.lightnov.com"];
+var PRODUCTION_ORIGINS = ["https://lightnov.com", "https://www.lightnov.com"];
+var baseURL = {
 	allowedHosts: [
 		...previewAllowedHosts,
+		...PRODUCTION_HOSTS,
 		"localhost",
 		"127.0.0.1",
 		"[::1]"
 	],
 	protocol: "auto",
-	fallback: "http://localhost:8080"
+	fallback: explicitBaseURL ?? "https://www.lightnov.com"
 };
-var trustedOrigins = explicitBaseURL ? [explicitBaseURL, ...LOCAL_DEV_ORIGINS] : [
+var trustedOrigins = [
+	...PRODUCTION_ORIGINS,
+	...explicitBaseURL ? [explicitBaseURL] : [],
+	...LOCAL_DEV_ORIGINS,
 	...previewAllowedHosts,
-	...previewAllowedHosts.flatMap((host) => [`https://${host}`, `http://${host}`]),
-	...LOCAL_DEV_ORIGINS
+	...previewAllowedHosts.flatMap((host) => [`https://${host}`, `http://${host}`])
 ];
 var databaseUrl = env$1("DATABASE_URL");
 var googleClientId = env$1("GOOGLE_CLIENT_ID");
 var googleClientSecret = env$1("GOOGLE_CLIENT_SECRET");
+var pool = databaseUrl ? new Pool({ connectionString: databaseUrl }) : null;
+pool?.on("error", () => {});
 var issuerBase = grokIssuer.replace(/\/+$/, "");
 var grokAuthorizationUrl = `${issuerBase}/api/auth/oauth2/authorize`;
 var grokTokenUrl = `${issuerBase}/api/auth/oauth2/token`;
 var grokUserInfoUrl = `${issuerBase}/api/auth/oauth2/userinfo`;
-var database = databaseUrl ? new Pool({ connectionString: databaseUrl }) : {
+var database = pool ? pool : {
 	dialect: pgliteDialect(() => getPglite()),
 	type: "postgres"
 };
@@ -10517,7 +10524,12 @@ var auth = betterAuth({
 	secret: env$1("BETTER_AUTH_SECRET") ?? previewAuthSecret(),
 	database,
 	trustedOrigins,
+	rateLimit: { customRules: {
+		"/sign-in/*": false,
+		"/sign-up/*": false
+	} },
 	account: {
+		storeStateStrategy: "cookie",
 		encryptOAuthTokens: true,
 		accountLinking: {
 			enabled: true,
@@ -10549,6 +10561,11 @@ var auth = betterAuth({
 			sameSite: "lax",
 			path: "/"
 		},
+		ipAddress: { ipAddressHeaders: [
+			"x-forwarded-for",
+			"x-real-ip",
+			"x-vercel-forwarded-for"
+		] },
 		cookies: {
 			session_token: { name: SESSION_TOKEN_COOKIE },
 			session_data: { name: "__Host-grok-auth.session_data" },
@@ -10563,9 +10580,24 @@ var auth = betterAuth({
 		tanstackStartCookies()
 	]
 });
+async function handle(request) {
+	try {
+		const response = await auth.handler(request);
+		if (response.status < 500) return response;
+		const text = await response.text();
+		if (text.trim()) return new Response(text, {
+			status: response.status,
+			headers: response.headers
+		});
+		return Response.json({ message: "Sign-in failed. Please try again." }, { status: response.status });
+	} catch (error) {
+		const message = error instanceof Error ? error.message : "Sign-in failed. Please try again.";
+		return Response.json({ message }, { status: 500 });
+	}
+}
 var Route = createFileRoute("/api/auth/$")({ server: { handlers: {
-	GET: ({ request }) => auth.handler(request),
-	POST: ({ request }) => auth.handler(request)
+	GET: ({ request }) => handle(request),
+	POST: ({ request }) => handle(request)
 } } });
 var rootRouteChildren = {
 	IndexRoute: Route$10.update({

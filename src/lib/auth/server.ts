@@ -103,27 +103,24 @@ const LOCAL_DEV_ORIGINS: string[] = [
   "http://127.0.0.1:8080",
   "http://[::1]:8080",
 ];
-const baseURL = explicitBaseURL ?? {
-  // Include loopback hosts so dynamic baseURL resolves for local email/password
-  // (not only the preview wildcard).
-  allowedHosts: [...previewAllowedHosts, "localhost", "127.0.0.1", "[::1]"],
-  // `auto` → trust both http:// and https:// expansions of allowedHosts
-  // (preview is https; local dev is http).
+const PRODUCTION_HOSTS = ["lightnov.com", "www.lightnov.com"];
+const PRODUCTION_ORIGINS = ["https://lightnov.com", "https://www.lightnov.com"];
+
+const baseURL = {
+  // The live site is served on www. A single BETTER_AUTH_URL of the bare
+  // domain makes every sign-in from www fail with "Invalid origin".
+  allowedHosts: [...previewAllowedHosts, ...PRODUCTION_HOSTS, "localhost", "127.0.0.1", "[::1]"],
   protocol: "auto" as const,
-  fallback: "http://localhost:8080",
+  fallback: explicitBaseURL ?? "https://www.lightnov.com",
 };
 
-// Origins Better Auth accepts on credentialed POSTs (sign-up/sign-in, etc.).
-// Missing entries here surface as FORBIDDEN "Invalid origin".
-const trustedOrigins: string[] = explicitBaseURL
-  ? [explicitBaseURL, ...LOCAL_DEV_ORIGINS]
-  : [
-      // Host wildcards (matched against Origin's host)
-      ...previewAllowedHosts,
-      // Full-origin wildcards (matched against Origin)
-      ...previewAllowedHosts.flatMap((host) => [`https://${host}`, `http://${host}`]),
-      ...LOCAL_DEV_ORIGINS,
-    ];
+const trustedOrigins: string[] = [
+  ...PRODUCTION_ORIGINS,
+  ...(explicitBaseURL ? [explicitBaseURL] : []),
+  ...LOCAL_DEV_ORIGINS,
+  ...previewAllowedHosts,
+  ...previewAllowedHosts.flatMap((host) => [`https://${host}`, `http://${host}`]),
+];
 
 const databaseUrl = env("DATABASE_URL");
 const googleClientId = env("GOOGLE_CLIENT_ID");
@@ -185,6 +182,12 @@ export const auth = betterAuth({
   // See `trustedOrigins` construction above — must cover live preview hosts AND
   // local loopback variants, or clients get "Invalid origin".
   trustedOrigins,
+  rateLimit: {
+    customRules: {
+      "/sign-in/*": { window: 60, max: 30 },
+      "/sign-up/*": { window: 60, max: 15 },
+    },
+  },
 
   // Encrypt broker-issued OAuth tokens at rest, and treat the broker's upstreams
   // as trusted first-party identities. The broker owns identity and X emails are
@@ -193,6 +196,7 @@ export const auth = betterAuth({
   // identity to an existing user). Google and X carry DISTINCT emails, so this
   // never merges them into one user — they stay separate identities.
   account: {
+    storeStateStrategy: "cookie",
     encryptOAuthTokens: true,
     accountLinking: {
       enabled: true,
@@ -237,6 +241,9 @@ export const auth = betterAuth({
   advanced: {
     useSecureCookies: false,
     defaultCookieAttributes: { secure: true, sameSite: "lax", path: "/" },
+    ipAddress: {
+      ipAddressHeaders: ["x-forwarded-for", "x-real-ip", "x-vercel-forwarded-for"],
+    },
     cookies: {
       session_token: { name: SESSION_TOKEN_COOKIE },
       session_data: { name: "__Host-grok-auth.session_data" },

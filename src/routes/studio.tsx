@@ -1,6 +1,8 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
+import { useRef, useState } from "react";
 import { AppNav } from "@/components/nav";
 import { genres, tropes } from "@/data/catalog";
+import { readManuscript, splitChapters } from "@/lib/manuscript";
 import { useReader } from "@/lib/reader-store";
 
 type Search = { novel?: string };
@@ -20,9 +22,12 @@ function Studio() {
   const novels = useReader((state) => state.novels);
   const patchNovel = useReader((state) => state.patchNovel);
   const addChapter = useReader((state) => state.addChapter);
+  const importChapters = useReader((state) => state.importChapters);
   const addPlate = useReader((state) => state.addPlate);
   const removePlate = useReader((state) => state.removePlate);
   const novel = novels.find((item) => item.id === novelId);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [notice, setNotice] = useState("");
 
   const onImage = (file: File | undefined) => {
     if (!file || !novel) return;
@@ -88,12 +93,52 @@ function Studio() {
               </div>
             </div>
             <section>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="font-serif text-2xl">Chapters</h2>
-                <button type="button" className="h-11 rounded-full border border-line px-4 font-sans text-sm" onClick={() => addChapter(novel.id)}>
-                  Add chapter
-                </button>
+                <div className="flex gap-2">
+                  <button type="button" className="h-11 rounded-full border border-line px-4 font-sans text-sm" onClick={() => fileRef.current?.click()}>
+                    Upload Word or PDF
+                  </button>
+                  <button type="button" className="h-11 rounded-full border border-line px-4 font-sans text-sm" onClick={() => addChapter(novel.id)}>
+                    Add chapter
+                  </button>
+                </div>
               </div>
+              <input
+                ref={fileRef}
+                type="file"
+                accept=".txt,.md,.rtf,.doc,.docx,.pdf,text/plain,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                className="hidden"
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  event.target.value = "";
+                  if (!file) return;
+                  setNotice(`Reading ${file.name}…`);
+                  void readManuscript(file)
+                    .then((text) => {
+                      const chapters = splitChapters(text);
+                      if (!chapters.length) {
+                        setNotice("That file had no readable text.");
+                        return;
+                      }
+                      const titled = chapters.map((chapter, index) => ({
+                        title: chapter.title || file.name.replace(/\.[^.]+$/, "") || `Chapter ${index + 1}`,
+                        body: chapter.body,
+                      }));
+                      importChapters(novel.id, titled);
+                      setNotice(
+                        titled.length > 1
+                          ? `Imported ${titled.length} chapters from ${file.name}.`
+                          : `Imported ${file.name} as one chapter.`,
+                      );
+                    })
+                    .catch((error: unknown) => {
+                      setNotice(error instanceof Error ? error.message : "That file could not be read.");
+                    });
+                }}
+              />
+              <p className="mt-2 font-sans text-sm text-muted">Word (.doc, .docx) and PDF. A line that starts with “Chapter” starts a new chapter.</p>
+              {notice ? <p className="mt-2 font-sans text-sm text-muted">{notice}</p> : null}
               <ul className="mt-3 flex flex-col gap-2">
                 {novel.chapters.map((chapter, index) => (
                   <li key={chapter.id}>

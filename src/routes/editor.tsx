@@ -1,6 +1,7 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { AppNav } from "@/components/nav";
+import { readManuscript } from "@/lib/manuscript";
 import { useReader } from "@/lib/reader-store";
 
 type Search = { novel?: string; chapter?: string };
@@ -59,24 +60,29 @@ function Editor() {
                 Paste
               </button>
               <button type="button" className="h-11 rounded-full border border-line bg-paper px-4 font-sans text-sm" onClick={() => fileRef.current?.click()}>
-                Import document
+                Upload Word or PDF
               </button>
               <input
                 ref={fileRef}
                 type="file"
-                accept=".txt,.md,text/plain,text/markdown"
+                accept=".txt,.md,.rtf,.doc,.docx,.pdf,text/plain,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 className="hidden"
                 onChange={(event) => {
                   const file = event.target.files?.[0];
                   event.target.value = "";
                   if (!file) return;
-                  void file.text().then((text) => {
-                    writeBody(text);
-                    if (!chapter.title || chapter.title.startsWith("Chapter")) {
-                      patchChapter(novel.id, chapter.id, { title: file.name.replace(/\.[^.]+$/, "") });
-                    }
-                    setNotice(`Imported ${file.name}.`);
-                  });
+                  setNotice(`Reading ${file.name}…`);
+                  void readManuscript(file)
+                    .then((text) => {
+                      writeBody(text);
+                      if (!chapter.title || chapter.title.startsWith("Chapter")) {
+                        patchChapter(novel.id, chapter.id, { title: file.name.replace(/\.[^.]+$/, "") });
+                      }
+                      setNotice(`Imported ${file.name}.`);
+                    })
+                    .catch((error: unknown) => {
+                      setNotice(error instanceof Error ? error.message : "That file could not be read.");
+                    });
                 }}
               />
             </div>
@@ -85,7 +91,7 @@ function Editor() {
               value={chapter.body}
               aria-label="Chapter"
               onChange={(event) => writeBody(event.target.value)}
-              placeholder="Write, or paste a chapter."
+              placeholder="Write, paste, or upload a Word file or PDF."
               className="mt-4 min-h-[55dvh] w-full rounded-3xl bg-paper p-6 font-serif text-lg leading-relaxed outline-none"
             />
             {novel.plates.length ? (

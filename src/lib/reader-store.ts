@@ -72,6 +72,7 @@ type ReaderState = {
   createNovel: () => string;
   patchNovel: (id: string, patch: Partial<Pick<Novel, "title" | "hook" | "genre" | "tropes">>) => void;
   addChapter: (novelId: string) => string;
+  importChapters: (novelId: string, chapters: { title: string; body: string }[]) => void;
   patchChapter: (novelId: string, chapterId: string, patch: Partial<ChapterDraft>) => void;
   addPlate: (novelId: string, plate: PlateDraft) => void;
   removePlate: (novelId: string, plateId: string) => void;
@@ -197,6 +198,19 @@ export const useReader = create<ReaderState>()(
         }));
         return id;
       },
+      importChapters: (novelId, incoming) =>
+        set((state) => ({
+          novels: state.novels.map((novel) => {
+            if (novel.id !== novelId || !incoming.length) return novel;
+            const blank = novel.chapters.every((chapter) => !chapter.body.trim());
+            const made = incoming.map((item, index) => ({
+              id: `ch-${Date.now()}-${index}`,
+              title: item.title || `Chapter ${index + 1}`,
+              body: item.body,
+            }));
+            return { ...novel, chapters: blank ? made : [...novel.chapters, ...made] };
+          }),
+        })),
       patchChapter: (novelId, chapterId, patch) =>
         set((state) => ({
           novels: state.novels.map((novel) =>

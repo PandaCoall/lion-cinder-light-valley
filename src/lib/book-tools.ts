@@ -73,7 +73,7 @@ export async function speakBlocks(
   const audio = new Audio(url);
   audio.volume = 1;
   audio.preload = "auto";
-  audio.playsInline = true;
+  audio.setAttribute("playsinline", "true");
   audio.playbackRate = rate;
   clip = audio;
   onNote?.("Playing 0:00");

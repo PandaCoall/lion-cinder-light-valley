@@ -51,7 +51,7 @@ async function loadEngine(onNote?: (note: string) => void): Promise<Engine> {
 
 function schedule(ctx: AudioContext, spoken: Spoken, when: number, beat: Beat) {
   const buffer = ctx.createBuffer(1, spoken.audio.length, spoken.sampling_rate);
-  buffer.copyToChannel(spoken.audio, 0);
+  buffer.copyToChannel(spoken.audio as Float32Array<ArrayBuffer>, 0);
   const source = ctx.createBufferSource();
   source.buffer = buffer;
   const highpass = ctx.createBiquadFilter();

@@ -113,11 +113,12 @@ function stripInstallParams(url) {
 	const rest = params.toString();
 	return rest ? `${path}?${rest}` : path;
 }
-function renderInstallPageHtml(template, { host, url } = {}) {
-	return String(template).replaceAll("{{APP_NAME}}", escapeHtml(appNameFromHost(host))).replaceAll("{{APP_URL}}", escapeHtml(stripInstallParams(url)));
+function renderInstallPageHtml(template, { host, url, site } = {}) {
+	const name = resolveOgTitle(site ?? {}, DEFAULT_APP_NAME, host);
+	return String(template).replaceAll("{{APP_NAME}}", escapeHtml(name)).replaceAll("{{APP_URL}}", escapeHtml(stripInstallParams(url)));
 }
-function renderWebManifest(hostHeader) {
-	const name = appNameFromHost(hostHeader);
+function renderWebManifest(hostHeader, site = {}) {
+	const name = resolveOgTitle(site ?? {}, DEFAULT_APP_NAME, hostHeader);
 	return JSON.stringify({
 		name,
 		short_name: name,
@@ -426,14 +427,15 @@ async function grokPwaMiddleware(event, next) {
 	if ((event.req.method ?? "GET").toUpperCase() !== "GET") return next();
 	const path = event.url.pathname;
 	const urlWithQuery = path + event.url.search;
-	if (path === "/__grok/manifest.webmanifest" || path === "/__grok/manifest.json") return new Response(renderWebManifest(requestHost(event)), { headers: {
+	if (path === "/__grok/manifest.webmanifest" || path === "/__grok/manifest.json") return new Response(renderWebManifest(requestHost(event), grokOgIdentity.site), { headers: {
 		"content-type": "application/manifest+json; charset=utf-8",
 		"cache-control": "no-cache"
 	} });
 	if (isInstallQuery(urlWithQuery) && isDocumentPath(path) && acceptsHtml(event.req.headers.get("accept"))) {
 		const html = renderInstallPageHtml(install_page_default, {
 			host: requestHost(event),
-			url: urlWithQuery
+			url: urlWithQuery,
+			site: grokOgIdentity.site
 		});
 		return new Response(html, { headers: {
 			"content-type": "text/html; charset=utf-8",
